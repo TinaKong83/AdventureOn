@@ -21,8 +21,9 @@ public class Room {
 
     public String roomFromDirection(String inputDirection) {
         String newRoom;
+        inputDirection = inputDirection.toLowerCase();
         for (int i = 0; i < directions.length; i++) {
-            if (inputDirection.equals(directions[i].getDirectionName())) {
+            if (inputDirection.equals(directions[i].getDirectionName().toLowerCase())) {
                 newRoom = directions[i].getRoom();
                 return newRoom;
             }
@@ -32,7 +33,6 @@ public class Room {
 
     public String possibleDirection() {
         StringBuilder directionString = new StringBuilder();
-        directionString.append("From here, you can go: ");
 
         if (directions.length == 1) {
             return directionString.append(directions[0].getDirectionName()).toString();

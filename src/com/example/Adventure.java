@@ -8,6 +8,7 @@ import com.mashape.unirest.http.exceptions.UnirestException;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+import java.util.Arrays;
 import java.util.Scanner;
 
 public class Adventure {
@@ -16,6 +17,14 @@ public class Adventure {
     private static Layout layout;
     private static Room currentRoom;
     private static boolean userQuit = false;
+
+    public Layout getLayout() {
+        return layout;
+    }
+
+    public Room getCurrentRoom() {
+        return currentRoom;
+    }
 
     public static void main(String[] arguments) {
         String url = "https://courses.engr.illinois.edu/cs126/adventure/siebel.json";
@@ -30,28 +39,38 @@ public class Adventure {
             System.out.println("Bad URL: " + url);
         }
 
+        currentRoom = layout.roomObjectFromName(layout.getStartingRoom());
         System.out.println("Your journey begins here");
         System.out.println(layout.getRooms().get(0).getDescription());
-        System.out.println(layout.getRooms().get(0).possibleDirection());
+        //System.out.println(currentRoom.getDescription());
+        System.out.println("From here, you can go: " + layout.getRooms().get(0).possibleDirection());
 
         while (!userQuit) {
             Scanner scanner = new Scanner(System.in);
             String userInput = scanner.nextLine().toLowerCase();
 
             if (userInput.equals("quit") || userInput.equals("exit")) {
+                System.out.println("The game has ended.");
                 userQuit = true;
-                //System.exit(0);
+            }
+            if (currentRoom.getName().equals(layout.getEndingRoom())) {
+                System.out.println("The game has ended.");
+                userQuit = true;
             }
 
-            String[] inputArray = userInput.toLowerCase().split(" ");
-            String[] possibleDirectionArray = currentRoom.possibleDirection().split(", ");
+            String[] possibleDirectionArray = currentRoom.possibleDirection().toLowerCase().split(", ");
 
-            if (inputArray[0].equals("go") && inputArray.length == 2) {
+            if (userInput.substring(0, 2).equals("go")) {
                 for (int i = 0; i < possibleDirectionArray.length; i++) {
+                    if (possibleDirectionArray[i].equals(userInput.substring(3))) {
+                        String currentDirection = possibleDirectionArray[i];
 
-                    if (possibleDirectionArray[i].equals(inputArray[1])) {
-                       String currentDirection = possibleDirectionArray[i];
-                       //currentRoom.roomFromDirection(currentDirection);
+                        String newRoomName = currentRoom.roomFromDirection(currentDirection);
+                        System.out.println(newRoomName);
+
+                        currentRoom = layout.roomObjectFromName(newRoomName);
+                        System.out.println(currentRoom.getDescription());
+                        System.out.println("From here, you can go: " + currentRoom.possibleDirection());
                     }
                 }
             }
@@ -70,6 +89,7 @@ public class Adventure {
             String json = stringHttpResponse.getBody();
             Gson gson = new Gson();
             layout = gson.fromJson(json, Layout.class);
+            currentRoom = layout.roomObjectFromName(layout.getStartingRoom());
         }
     }
 }
