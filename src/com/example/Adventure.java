@@ -44,31 +44,19 @@ public class Adventure {
         }
 
         System.out.println(beginGame());
-
-        //make this a method?
+        Scanner scanner = new Scanner(System.in);
         while (!gameEnded) {
             commandFound = false;
-            Scanner scanner = new Scanner(System.in);
             String userInput = scanner.nextLine().toLowerCase();
-
-            if (userInput.equals("quit") || userInput.equals("exit")
-                    || currentRoom.getName().equals(layout.getEndingRoom())) {
-                System.out.println("The game has ended.");
+            if (userEndsGame(userInput)) {
+                System.out.println("The game has ended");
                 System.exit(0);
-                gameEnded = true;
             }
-
             String[] possibleDirectionArray = currentRoom.possibleDirection().toLowerCase().split(", ");
             if (userInput.length() > 1 && userInput.substring(0, 2).equals("go")) {
-                for (int i = 0; i < possibleDirectionArray.length; i++) {
-                    if (possibleDirectionArray[i].equals(userInput.substring(3))) {
-                        String currentDirection = possibleDirectionArray[i];
-                        String newRoomName = currentRoom.roomFromDirection(currentDirection);
-                        currentRoom = layout.roomObjectFromName(newRoomName);
-                        System.out.println(roomInformation(currentRoom));
-                        commandFound = true;
-                        break;
-                    }
+                if (findDirectionInArray(possibleDirectionArray, userInput)) {
+                    commandFound = true;
+                    System.out.println(roomInformation(currentRoom));
                 }
                 if (!commandFound) {
                     System.out.println(printWrongDirection(userInput));
@@ -79,6 +67,20 @@ public class Adventure {
         }
     }
 
+    //method to check if an array contains a specific direction as an element
+    private static boolean findDirectionInArray(String[] directionsArray, String userInput) {
+        userInput = userInput.substring(3);
+        for (int i = 0; i < directionsArray.length; i++) {
+            if (directionsArray[i].toLowerCase().equals(userInput.toLowerCase())) {
+                String currentDirection = directionsArray[i];
+                String newRoomName = currentRoom.roomFromDirection(currentDirection);
+                currentRoom = layout.roomObjectFromName(newRoomName);
+                return true;
+            }
+        }
+        return false;
+    }
+
     private static String beginGame() {
         currentRoom = layout.roomObjectFromName(layout.getStartingRoom());
         //layout.getRooms().get(0)
@@ -87,6 +89,10 @@ public class Adventure {
         beginGame = beginGame + "\n" + "From here, you can go: " + currentRoom.possibleDirection();
 
         return beginGame;
+    }
+
+    private static boolean userEndsGame(String userInput) {
+        return userInput.equals("quit") || userInput.equals("exit");
     }
 
     private static String roomInformation(Room currentRoom) {

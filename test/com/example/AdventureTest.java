@@ -1,5 +1,6 @@
 package com.example;
 
+import org.junit.Rule;
 import org.junit.Test;
 
 import com.google.gson.Gson;
@@ -8,6 +9,7 @@ import org.junit.Test;
 
 import java.net.MalformedURLException;
 import java.util.Arrays;
+import java.util.Scanner;
 
 import static org.junit.Assert.*;
 
