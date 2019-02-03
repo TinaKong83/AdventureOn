@@ -54,6 +54,7 @@ public class Adventure {
             if (userInput.equals("quit") || userInput.equals("exit")
                     || currentRoom.getName().equals(layout.getEndingRoom())) {
                 System.out.println("The game has ended.");
+                System.exit(0);
                 gameEnded = true;
             }
 
@@ -80,9 +81,10 @@ public class Adventure {
 
     private static String beginGame() {
         currentRoom = layout.roomObjectFromName(layout.getStartingRoom());
+        //layout.getRooms().get(0)
         String beginGame = "Your journey begins here";
-        beginGame = beginGame + "\n" + layout.getRooms().get(0).getDescription();
-        beginGame = beginGame + "\n" + "From here, you can go: " + layout.getRooms().get(0).possibleDirection();
+        beginGame = beginGame + "\n" + currentRoom.getDescription();
+        beginGame = beginGame + "\n" + "From here, you can go: " + currentRoom.possibleDirection();
 
         return beginGame;
     }
@@ -92,7 +94,7 @@ public class Adventure {
     }
 
     private static String printWrongDirection(String userInput) {
-        return "I can't go '" + userInput + "'" + "\n" + roomInformation(currentRoom);
+        return "I can't go '" + userInput.substring(3) + "'" + "\n" + roomInformation(currentRoom);
     }
 
     private static String printInvalidCommand(String userInput) {

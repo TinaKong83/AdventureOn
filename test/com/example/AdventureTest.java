@@ -27,13 +27,55 @@ public class AdventureTest {
     }
 
     @Test
-    public void roomFromDirectionString() {
-        assertEquals("SiebelEntry", adventure.getCurrentRoom().roomFromDirection("east"));
+    public void roomFromDirectionACMOffice() {
+        assertEquals("SiebelEntry", adventure.getLayout().getRooms().get(2).roomFromDirection("South"));
     }
 
-    /*@Test
-    public void roomFromDirection() {
-        System.out.println(adventure.getCurrentRoom().getName());
-        assertEquals("AcmOffice", adventure.getCurrentRoom().roomFromDirection("northeast"));
-    }*/
+    @Test
+    public void roomFromDirectionSiebelNorthHallway() {
+        assertEquals("Siebel1112", adventure.getLayout().getRooms().get(3).roomFromDirection("NorthEast"));
+    }
+
+    @Test
+    public void roomFromDirectionMatthewsStreet() {
+        //System.out.println(adventure.getCurrentRoom().getName());
+        assertEquals("SiebelEntry", adventure.getLayout().getRooms().get(0).roomFromDirection("east"));
+    }
+
+    @Test
+    public void roomFromDirectionSiebelEntry() {
+        assertEquals("SiebelNorthHallway", adventure.getLayout().getRooms().get(1).roomFromDirection("north"));
+        assertEquals("AcmOffice", adventure.getLayout().getRooms().get(1).roomFromDirection("northeast"));
+    }
+
+    @Test
+    public void roomFromDirectionSiebelEastHallway() {
+        assertEquals("SiebelBasement", adventure.getLayout().getRooms().get(5).roomFromDirection("Down"));
+    }
+
+    @Test
+    public void roomFromDirectionSiebelBasement() {
+        assertEquals("SiebelEastHallway", adventure.getLayout().getRooms().get(7).roomFromDirection("up"));
+    }
+
+    @Test
+    public void possibleDirectionsMatthewsStreet() {
+        assertEquals("East", adventure.getLayout().getRooms().get(0).possibleDirection());
+    }
+
+    @Test
+    public void possibleDirectionsSiebelEntry() {
+        assertEquals("West, Northeast, North, East", adventure.getLayout().getRooms().get(1).possibleDirection());
+    }
+
+    @Test
+    public void possibleDirectionsSiebelEastHallway() {
+        assertEquals("West, South, Down", adventure.getLayout().getRooms().get(5).possibleDirection());
+    }
+
+    @Test
+    public void possibleDirectionsSiebelBasement() {
+        assertEquals("Up", adventure.getLayout().getRooms().get(7).possibleDirection());
+    }
+
 }

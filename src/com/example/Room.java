@@ -25,15 +25,16 @@ public class Room {
         String newRoom;
         inputDirection = inputDirection.toLowerCase();
         for (int i = 0; i < directions.length; i++) {
-            System.out.println("my input direction is " + inputDirection);
-            System.out.println(directions[i].getDirectionName().toLowerCase());
+            //System.out.println("my input direction is " + inputDirection);
+            //System.out.println("my direction name is " + directions[i].getDirectionName().toLowerCase());
             if (inputDirection.equals(directions[i].getDirectionName().toLowerCase())) {
                 newRoom = directions[i].getRoom();
-                System.out.println(newRoom);
+                //System.out.println("This prints if I have a room for the direction");
+                //System.out.println("My room name from the direction is: " + newRoom);
                 return newRoom;
             }
         }
-        return "abc";
+        return "Room not found";
     }
 
     public String possibleDirection() {
