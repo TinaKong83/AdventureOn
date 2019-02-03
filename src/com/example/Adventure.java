@@ -7,23 +7,27 @@ import com.mashape.unirest.http.exceptions.UnirestException;
 
 import java.net.MalformedURLException;
 import java.net.URL;
-
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Adventure {
     private static final int STATUS_OK = 200;
-    //private static final String url = "https://courses.engr.illinois.edu/cs126/adventure/siebel.json";
     private static Layout layout;
     private static Room currentRoom;
-    private static boolean userQuit = false;
+    private static ArrayList<Room> rooms;
+    private static boolean gameEnded = false;
+    private static boolean commandFound = false;
+
+    public Room getCurrentRoom() {
+        return currentRoom;
+    }
 
     public Layout getLayout() {
         return layout;
     }
 
-    public Room getCurrentRoom() {
-        return currentRoom;
+    public ArrayList<Room> getRooms() {
+        return rooms;
     }
 
     public static void main(String[] arguments) {
@@ -39,42 +43,60 @@ public class Adventure {
             System.out.println("Bad URL: " + url);
         }
 
-        currentRoom = layout.roomObjectFromName(layout.getStartingRoom());
-        System.out.println("Your journey begins here");
-        System.out.println(layout.getRooms().get(0).getDescription());
-        //System.out.println(currentRoom.getDescription());
-        System.out.println("From here, you can go: " + layout.getRooms().get(0).possibleDirection());
+        System.out.println(beginGame());
 
-        while (!userQuit) {
+        //make this a method?
+        while (!gameEnded) {
+            commandFound = false;
             Scanner scanner = new Scanner(System.in);
             String userInput = scanner.nextLine().toLowerCase();
 
-            if (userInput.equals("quit") || userInput.equals("exit")) {
+            if (userInput.equals("quit") || userInput.equals("exit")
+                    || currentRoom.getName().equals(layout.getEndingRoom())) {
                 System.out.println("The game has ended.");
-                userQuit = true;
-            }
-            if (currentRoom.getName().equals(layout.getEndingRoom())) {
-                System.out.println("The game has ended.");
-                userQuit = true;
+                gameEnded = true;
             }
 
             String[] possibleDirectionArray = currentRoom.possibleDirection().toLowerCase().split(", ");
-
-            if (userInput.substring(0, 2).equals("go")) {
+            if (userInput.length() > 1 && userInput.substring(0, 2).equals("go")) {
                 for (int i = 0; i < possibleDirectionArray.length; i++) {
                     if (possibleDirectionArray[i].equals(userInput.substring(3))) {
                         String currentDirection = possibleDirectionArray[i];
-
                         String newRoomName = currentRoom.roomFromDirection(currentDirection);
-                        System.out.println(newRoomName);
-
                         currentRoom = layout.roomObjectFromName(newRoomName);
-                        System.out.println(currentRoom.getDescription());
-                        System.out.println("From here, you can go: " + currentRoom.possibleDirection());
+                        System.out.println(roomInformation(currentRoom));
+                        commandFound = true;
+                        break;
                     }
                 }
+                if (!commandFound) {
+                    System.out.println(printWrongDirection(userInput));
+                }
+            } else {
+                System.out.println(printInvalidCommand(userInput));
             }
         }
+    }
+
+    private static String beginGame() {
+        currentRoom = layout.roomObjectFromName(layout.getStartingRoom());
+        String beginGame = "Your journey begins here";
+        beginGame = beginGame + "\n" + layout.getRooms().get(0).getDescription();
+        beginGame = beginGame + "\n" + "From here, you can go: " + layout.getRooms().get(0).possibleDirection();
+
+        return beginGame;
+    }
+
+    private static String roomInformation(Room currentRoom) {
+        return currentRoom.getDescription() + "\n" + "From here, you can go: " + currentRoom.possibleDirection();
+    }
+
+    private static String printWrongDirection(String userInput) {
+        return "I can't go '" + userInput + "'" + "\n" + roomInformation(currentRoom);
+    }
+
+    private static String printInvalidCommand(String userInput) {
+        return "I don't understand '" + userInput + "'" + "\n" + roomInformation(currentRoom);
     }
 
     static void makeApiRequest(String url) throws UnirestException, MalformedURLException {

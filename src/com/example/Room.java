@@ -1,5 +1,7 @@
 package com.example;
 
+import java.util.Arrays;
+
 public class Room {
     private String name;
     private String description;
@@ -23,12 +25,15 @@ public class Room {
         String newRoom;
         inputDirection = inputDirection.toLowerCase();
         for (int i = 0; i < directions.length; i++) {
+            System.out.println("my input direction is " + inputDirection);
+            System.out.println(directions[i].getDirectionName().toLowerCase());
             if (inputDirection.equals(directions[i].getDirectionName().toLowerCase())) {
                 newRoom = directions[i].getRoom();
+                System.out.println(newRoom);
                 return newRoom;
             }
         }
-        return null;
+        return "abc";
     }
 
     public String possibleDirection() {
@@ -43,7 +48,6 @@ public class Room {
                 directionString.append(", ");
             }
         }
-
         String lastRoom = directions[directions.length - 1].getDirectionName();
         directionString.append(lastRoom);
         return directionString.toString();
