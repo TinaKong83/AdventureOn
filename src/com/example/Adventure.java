@@ -16,7 +16,7 @@ public class Adventure {
     private static Room currentRoom;
     private static ArrayList<Room> rooms;
     private static boolean gameEnded = false;
-    private static boolean commandFound = false;
+
 
     public Room getCurrentRoom() {
         return currentRoom;
@@ -44,35 +44,42 @@ public class Adventure {
 
         System.out.println(beginGame());
         Scanner scanner = new Scanner(System.in);
+        //check user input for url before game starts
+        //
         while (!gameEnded) {
             String userInput = scanner.nextLine().toLowerCase();
             if (userEndsGame(userInput)) {
-                System.exit(0);
+                break;
             }
             String[] possibleDirectionArray = currentRoom.possibleDirection().toLowerCase().split(", ");
             if (userInput.length() <= 3) {
-                System.out.println(printInvalidCommand(userInput));
+                System.out.println(printInvalidCommand(userInput, currentRoom));
             } else if (findDirectionInArray(possibleDirectionArray, userInput)) {
                 System.out.println(roomInformation(currentRoom));
             } else if (userInput.substring(0, 2).equals("go")
                     && !findDirectionInArray(possibleDirectionArray, userInput)) {
-                System.out.println(printWrongDirection(userInput));
+                System.out.println(printWrongDirection(userInput, currentRoom));
             } else {
-                System.out.println(printInvalidCommand(userInput));
+                System.out.println(printInvalidCommand(userInput, currentRoom));
             }
         }
     }
+
+    /**
+     * //TO DO: URL, MAKE METHODS THAT YOU CALL IN TO STRINGS, MAGIC NUMBERS, JAVADOC
+     **/
 
     private static String beginGame() {
         currentRoom = layout.roomObjectFromName(layout.getStartingRoom());
         String beginGame = "Your journey begins here";
         beginGame = beginGame + "\n" + currentRoom.getDescription();
         beginGame = beginGame + "\n" + "From here, you can go: " + currentRoom.possibleDirection();
-
         return beginGame;
     }
 
     //method to check if an array contains a specific direction as an element
+    //use layout again but with a different url
+    //call http request on a different string
     public static boolean findDirectionInArray(String[] directionsArray, String userInput) {
         if (userInput == null || directionsArray == null || userInput.length() <= 1) {
             return false;
@@ -107,15 +114,15 @@ public class Adventure {
         return currentRoom.getDescription() + "\n" + "From here, you can go: " + currentRoom.possibleDirection();
     }
 
-    public static String printWrongDirection(String userInput) {
-        if (userInput == null) {
+    public static String printWrongDirection(String userInput, Room currentRoom) {
+        if (userInput == null || currentRoom == null) {
             return null;
         }
         return "I can't go '" + userInput.substring(3) + "'" + "\n" + roomInformation(currentRoom);
     }
 
-    public static String printInvalidCommand(String userInput) {
-        if (userInput == null) {
+    public static String printInvalidCommand(String userInput, Room currentRoom) {
+        if (userInput == null || currentRoom == null) {
             return null;
         }
         return "I don't understand '" + userInput + "'" + "\n" + roomInformation(currentRoom);
