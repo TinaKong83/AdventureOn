@@ -117,10 +117,4 @@ public class AdventureTest {
         assertEquals("You are in the north hallway.  You can see Siebel 1112 and the door toward NCSA." + "\n" + "From here, you can go: South, NorthEast",
                 adventure.roomInformation(adventure.getLayout().getRooms().get(3)));
     }
-
-
-
-
-
-
 }
