@@ -22,6 +22,9 @@ public class Room {
     }
 
     public String roomFromDirection(String inputDirection) {
+        if (inputDirection == null) {
+            return "Room not found";
+        }
         String newRoom;
         inputDirection = inputDirection.toLowerCase();
         for (int i = 0; i < directions.length; i++) {

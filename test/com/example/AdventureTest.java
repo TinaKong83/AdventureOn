@@ -9,7 +9,6 @@ import org.junit.Test;
 
 import java.net.MalformedURLException;
 import java.util.Arrays;
-import java.util.Scanner;
 
 import static org.junit.Assert.*;
 
@@ -79,5 +78,49 @@ public class AdventureTest {
     public void possibleDirectionsSiebelBasement() {
         assertEquals("Up", adventure.getLayout().getRooms().get(7).possibleDirection());
     }
+
+    @Test
+    public void findDirectionInArrayMatthewsStreet() {
+        String[] directionsArray = adventure.getLayout().getRooms().get(0).possibleDirection().split(", ");
+
+        assertTrue(adventure.findDirectionInArray(directionsArray, "go EAST"));
+        assertFalse(adventure.findDirectionInArray(directionsArray, "go south"));
+        assertFalse(adventure.findDirectionInArray(directionsArray, ""));
+        assertFalse(adventure.findDirectionInArray(directionsArray, "east"));
+        assertFalse(adventure.findDirectionInArray(directionsArray, null));
+    }
+
+    @Test
+    public void findDirectionInArraySiebelEastHallway() {
+        String[] directionsArray = adventure.getLayout().getRooms().get(3).possibleDirection().split(", ");
+
+        assertFalse(adventure.findDirectionInArray(directionsArray, "south"));
+        assertFalse(adventure.findDirectionInArray(directionsArray, "go south!!"));
+        assertFalse(adventure.findDirectionInArray(directionsArray, ""));
+        assertTrue(adventure.findDirectionInArray(directionsArray, "GO northeast"));
+        assertFalse(adventure.findDirectionInArray(null, null));
+    }
+
+    @Test
+    public void userEndsGame() {
+        assertTrue(adventure.userEndsGame("exit"));
+        assertTrue(adventure.userEndsGame("qUiT"));
+        assertTrue(adventure.userEndsGame("quit"));
+        assertFalse(adventure.userEndsGame(""));
+        assertFalse(adventure.userEndsGame(null));
+    }
+
+    @Test
+    public void roomInformation() {
+        assertEquals("You are on Matthews, outside the Siebel Center" + "\n" + "From here, you can go: East",
+                adventure.roomInformation(adventure.getLayout().getRooms().get(0)));
+        assertEquals("You are in the north hallway.  You can see Siebel 1112 and the door toward NCSA." + "\n" + "From here, you can go: South, NorthEast",
+                adventure.roomInformation(adventure.getLayout().getRooms().get(3)));
+    }
+
+
+
+
+
 
 }

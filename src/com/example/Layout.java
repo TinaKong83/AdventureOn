@@ -20,6 +20,9 @@ public class Layout {
     }
 
     public Room roomObjectFromName(String inputRoomName) {
+        if (inputRoomName == null) {
+            return null;
+        }
         for (int i = 0; i < rooms.size(); i++) {
             if (rooms.get(i).getName().equals(inputRoomName)) {
                 return rooms.get(i);

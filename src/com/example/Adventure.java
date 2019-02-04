@@ -32,7 +32,6 @@ public class Adventure {
 
     public static void main(String[] arguments) {
         String url = "https://courses.engr.illinois.edu/cs126/adventure/siebel.json";
-
         // Make an HTTP request to the above URL
         try {
             makeApiRequest(url);
@@ -67,10 +66,25 @@ public class Adventure {
         }
     }
 
+    private static String beginGame() {
+        currentRoom = layout.roomObjectFromName(layout.getStartingRoom());
+        String beginGame = "Your journey begins here";
+        beginGame = beginGame + "\n" + currentRoom.getDescription();
+        beginGame = beginGame + "\n" + "From here, you can go: " + currentRoom.possibleDirection();
+
+        return beginGame;
+    }
+
     //method to check if an array contains a specific direction as an element
-    private static boolean findDirectionInArray(String[] directionsArray, String userInput) {
+    public static boolean findDirectionInArray(String[] directionsArray, String userInput) {
+        if (userInput == null || directionsArray == null || userInput.length() < 1) {
+            return false;
+        }
         userInput = userInput.substring(3);
         for (int i = 0; i < directionsArray.length; i++) {
+            if (directionsArray[i] == null) {
+                continue;
+            }
             if (directionsArray[i].toLowerCase().equals(userInput.toLowerCase())) {
                 String currentDirection = directionsArray[i];
                 String newRoomName = currentRoom.roomFromDirection(currentDirection);
@@ -81,25 +95,27 @@ public class Adventure {
         return false;
     }
 
-    private static String beginGame() {
-        currentRoom = layout.roomObjectFromName(layout.getStartingRoom());
-        //layout.getRooms().get(0)
-        String beginGame = "Your journey begins here";
-        beginGame = beginGame + "\n" + currentRoom.getDescription();
-        beginGame = beginGame + "\n" + "From here, you can go: " + currentRoom.possibleDirection();
+    //CHANGE TO RETURN NULL LATER???
 
-        return beginGame;
-    }
-
-    private static boolean userEndsGame(String userInput) {
+    public static boolean userEndsGame(String userInput) {
+        if (userInput == null) {
+            return false;
+        }
+        userInput = userInput.toLowerCase();
         return userInput.equals("quit") || userInput.equals("exit");
     }
 
-    private static String roomInformation(Room currentRoom) {
+    public static String roomInformation(Room currentRoom) {
+        if (currentRoom == null) {
+            return null;
+        }
         return currentRoom.getDescription() + "\n" + "From here, you can go: " + currentRoom.possibleDirection();
     }
 
-    private static String printWrongDirection(String userInput) {
+    public static String printWrongDirection(String userInput) {
+        if (userInput == null) {
+            return "Invalid input.";
+        }
         return "I can't go '" + userInput.substring(3) + "'" + "\n" + roomInformation(currentRoom);
     }
 
