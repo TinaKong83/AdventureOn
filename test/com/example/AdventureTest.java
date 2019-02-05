@@ -25,6 +25,7 @@ public class AdventureTest {
     @Test(expected = MalformedURLException.class)
     public void testBadURL() throws Exception {
         Adventure.makeApiRequest("foobar");
+        Adventure.makeApiRequest("https://courses.engr.illinois.edu/cs126/adventure/circular.json");
     }
 
     @Test
@@ -118,8 +119,8 @@ public class AdventureTest {
     public void printWrongDirection() {
         assertEquals("I can't go 'west'\n" + "You are on Matthews, outside the Siebel Center\n" +
                 "From here, you can go: East", adventure.printWrongDirection("go west", adventure.getLayout().getRooms().get(0)));
-        assertEquals("I can't go 'sbsjobiji'\n" + "You are on Matthews, outside the Siebel Center\n" +
-                "From here, you can go: East", adventure.printWrongDirection("go sbsjobiji", adventure.getLayout().getRooms().get(0)));
+        assertEquals("I can't go 'SB SJO biji'\n" + "You are on Matthews, outside the Siebel Center\n" +
+                "From here, you can go: East", adventure.printWrongDirection("go SB SJO biji", adventure.getLayout().getRooms().get(0)));
         assertEquals("I can't go ''\n" + "You are in the basement of Siebel.  You see tables with students working and door to computer labs.\n" + "From here, you can go: Up",
                 adventure.printWrongDirection("go ", adventure.getLayout().getRooms().get(7)));
     }
@@ -142,8 +143,8 @@ public class AdventureTest {
                 "From here, you can go: East", adventure.printInvalidCommand("go ", adventure.getLayout().getRooms().get(0)));
         assertEquals("I don't understand ' '\n" + "You are in the basement of Siebel.  You see tables with students working and door to computer labs.\n" + "From here, you can go: Up",
                 adventure.printInvalidCommand(" ", adventure.getLayout().getRooms().get(7)));
-        assertEquals("I don't understand 'GOPHERS TASTY'\n" + "You are in the basement of Siebel.  You see tables with students working and door to computer labs.\n" + "From here, you can go: Up",
-                adventure.printInvalidCommand("GOPHERS TASTY", adventure.getLayout().getRooms().get(7)));
+        assertEquals("I don't understand 'gophers are TASTY'\n" + "You are in the basement of Siebel.  You see tables with students working and door to computer labs.\n" + "From here, you can go: Up",
+                adventure.printInvalidCommand("gophers are TASTY", adventure.getLayout().getRooms().get(7)));
         assertEquals("I don't understand 'UP'\n" + "You are in the basement of Siebel.  You see tables with students working and door to computer labs.\n" + "From here, you can go: Up",
                 adventure.printInvalidCommand("UP", adventure.getLayout().getRooms().get(7)));
     }

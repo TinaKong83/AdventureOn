@@ -7,8 +7,6 @@ public class Room {
     private String description;
     private Directions[] directions;
 
-    //get directions you can go from this room
-
     public String getName() {
         return name;
     }

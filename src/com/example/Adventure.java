@@ -7,16 +7,13 @@ import com.mashape.unirest.http.exceptions.UnirestException;
 
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Adventure {
     private static final int STATUS_OK = 200;
     private static Layout layout;
     private static Room currentRoom;
-    private static ArrayList<Room> rooms;
     private static boolean gameEnded = false;
-
 
     public Room getCurrentRoom() {
         return currentRoom;
@@ -26,11 +23,7 @@ public class Adventure {
         return layout;
     }
 
-    public ArrayList<Room> getRooms() {
-        return rooms;
-    }
-
-    public static void main(String[] arguments) {
+    public static void main(String[] arguments) throws UnirestException, MalformedURLException {
         String url = "https://courses.engr.illinois.edu/cs126/adventure/siebel.json";
         // Make an HTTP request to the above URL
         try {
@@ -42,25 +35,27 @@ public class Adventure {
             System.out.println("Bad URL: " + url);
         }
 
+        testBadUrl();
         System.out.println(beginGame());
         Scanner scanner = new Scanner(System.in);
-        //check user input for url before game starts
-        //
         while (!gameEnded) {
-            String userInput = scanner.nextLine().toLowerCase();
-            if (userEndsGame(userInput)) {
+            String originalInput = scanner.nextLine();
+            String userInput = originalInput.toLowerCase();
+            if (userEndsGame(originalInput) || reachedFinalRoom(currentRoom)) {
+                System.out.println("You have reached your final destination.");
                 break;
             }
+            String[] userInputArray = userInput.split(" ");
             String[] possibleDirectionArray = currentRoom.possibleDirection().toLowerCase().split(", ");
-            if (userInput.length() <= 3) {
+            if (userInputArray.length < 2) {
                 System.out.println(printInvalidCommand(userInput, currentRoom));
             } else if (findDirectionInArray(possibleDirectionArray, userInput)) {
                 System.out.println(roomInformation(currentRoom));
-            } else if (userInput.substring(0, 2).equals("go")
+            } else if (userInputArray[0].equals("go")
                     && !findDirectionInArray(possibleDirectionArray, userInput)) {
-                System.out.println(printWrongDirection(userInput, currentRoom));
+                System.out.println(printWrongDirection(originalInput, currentRoom));
             } else {
-                System.out.println(printInvalidCommand(userInput, currentRoom));
+                System.out.println(printInvalidCommand(originalInput, currentRoom));
             }
         }
     }
@@ -69,7 +64,25 @@ public class Adventure {
      * //TO DO: URL, MAKE METHODS THAT YOU CALL IN TO STRINGS, MAGIC NUMBERS, JAVADOC
      **/
 
-    private static String beginGame() {
+    public static void testBadUrl() throws UnirestException, MalformedURLException {
+        System.out.println("Please enter an alternate url.");
+        Scanner scanner = new Scanner(System.in);
+        String userUrl = scanner.nextLine();
+
+        // Make an HTTP request to the above URL
+        try {
+            makeApiRequest(userUrl);
+        } catch (UnirestException e) {
+//            e.printStackTrace();
+            System.out.println("Network not responding");
+        } catch (MalformedURLException e) {
+            System.out.println("Bad URL: " + userUrl);
+            System.out.println("We will be defaulting to the original url" + "\n");
+            makeApiRequest("https://courses.engr.illinois.edu/cs126/adventure/siebel.json");
+        }
+    }
+
+    public static String beginGame() {
         currentRoom = layout.roomObjectFromName(layout.getStartingRoom());
         String beginGame = "Your journey begins here";
         beginGame = beginGame + "\n" + currentRoom.getDescription();
@@ -84,9 +97,6 @@ public class Adventure {
         if (userInput == null || directionsArray == null || userInput.length() <= 1) {
             return false;
         }
-        if (!userInput.substring(0, 2).toLowerCase().equals("go")) {
-            return false;
-        }
         userInput = userInput.substring(3).toLowerCase();
         for (int i = 0; i < directionsArray.length; i++) {
             if (directionsArray[i] != null && directionsArray[i].toLowerCase().equals(userInput)) {
@@ -97,6 +107,13 @@ public class Adventure {
             }
         }
         return false;
+    }
+
+    public static boolean reachedFinalRoom(Room currentRoom) {
+        if (currentRoom == null) {
+            return false;
+        }
+        return currentRoom.equals(layout.roomObjectFromName(layout.getEndingRoom()));
     }
 
     public static boolean userEndsGame(String userInput) {
@@ -111,21 +128,21 @@ public class Adventure {
         if (currentRoom == null) {
             return null;
         }
-        return currentRoom.getDescription() + "\n" + "From here, you can go: " + currentRoom.possibleDirection();
+        return currentRoom.getDescription() + "\nFrom here, you can go: " + currentRoom.possibleDirection();
     }
 
     public static String printWrongDirection(String userInput, Room currentRoom) {
         if (userInput == null || currentRoom == null) {
             return null;
         }
-        return "I can't go '" + userInput.substring(3) + "'" + "\n" + roomInformation(currentRoom);
+        return "I can't go '" + userInput.substring(3) + "'\n" + roomInformation(currentRoom);
     }
 
     public static String printInvalidCommand(String userInput, Room currentRoom) {
         if (userInput == null || currentRoom == null) {
             return null;
         }
-        return "I don't understand '" + userInput + "'" + "\n" + roomInformation(currentRoom);
+        return "I don't understand '" + userInput + "'\n" + roomInformation(currentRoom);
     }
 
     static void makeApiRequest(String url) throws UnirestException, MalformedURLException {
