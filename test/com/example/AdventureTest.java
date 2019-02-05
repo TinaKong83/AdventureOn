@@ -18,6 +18,7 @@ public class AdventureTest {
     @Test(expected = MalformedURLException.class)
     public void testBadURL() throws Exception {
         Adventure.makeApiRequest("foobar");
+        Adventure.makeApiRequest("");
         Adventure.makeApiRequest("https://courses.engr.illinois.edu/cs126/adventure/circular.json");
     }
 

@@ -19,6 +19,12 @@ public class Room {
         return directions;
     }
 
+    /**
+     * Method that determines your boom given a user inputted direction.
+     *
+     * @param inputDirection   the direction command the user inputs (e.g. east, west).
+     * @return String.
+     **/
     public String roomFromDirection(String inputDirection) {
         if (inputDirection == null) {
             return null;
@@ -34,6 +40,11 @@ public class Room {
         return null;
     }
 
+    /**
+     * Method that finds all possible directions the user can move in.
+     *
+     * @return String.
+     **/
     public String possibleDirection() {
         StringBuilder directionString = new StringBuilder();
         if (directions.length == 1) {

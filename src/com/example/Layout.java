@@ -19,6 +19,12 @@ public class Layout {
         return rooms;
     }
 
+    /**
+     * Method that returns a room object when given the name of a certain room.
+     *
+     * @param inputRoomName   the name of the room.
+     * @return Room.
+     **/
     public Room roomObjectFromName(String inputRoomName) {
         if (inputRoomName == null) {
             return null;

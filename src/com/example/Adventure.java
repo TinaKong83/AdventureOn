@@ -9,6 +9,12 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Scanner;
 
+/**
+ * A simple text-based “adventure game” that takes a description of the world in JSON and lets
+ * a user interactively navigate through the world.
+ *
+ * @see <a href="https://courses.engr.illinois.edu/cs126/sp2019/assignments/adventure.pdf</a>
+ **/
 public class Adventure {
     private static final int STATUS_OK = 200;
     private static final int COMMAND_INDEX = 3;
@@ -52,7 +58,8 @@ public class Adventure {
     }
 
     /**
-     * Method that allows user to specify an alternate URL. If the URL is invalid, default to original
+     * Method that allows user to specify an alternate URL.
+     * If the URL is invalid, default to original URL.
      **/
     public static void testAlternateUrl() throws UnirestException, MalformedURLException {
         System.out.println("Please enter an alternate url.");
@@ -71,7 +78,8 @@ public class Adventure {
     }
 
     /**
-     * Method that states the description and possible directions you can go from the starting room.
+     * Method that states the description and possible directions from the starting room.
+     *
      * @return String of starting room information.
      **/
     public static String beginGame() {
@@ -82,9 +90,10 @@ public class Adventure {
     }
 
     /**
-     * Method that states the description and possible directions you can go from the starting room.
+     * Method that determines if the user's inputted command contains a valid direction.
+     *
      * @param directionsArray, an array of possible directions one can move from the current room.
-     * @param userInput, the direction command the user inputs (e.g. go east, go west).
+     * @param userInput,       the direction command the user inputs (e.g. go east, go west).
      * @return boolean.
      **/
     public static boolean findDirectionInArray(String[] directionsArray, String userInput) {
@@ -109,6 +118,7 @@ public class Adventure {
 
     /**
      * Method that checks if the user has reached the ending room.
+     *
      * @param currentRoom the room the user is currently in.
      * @return boolean.
      **/
@@ -121,7 +131,8 @@ public class Adventure {
 
     /**
      * Method that checks if the user has typed in "quit" or "enter", to end the program.
-     * @param userInput command inputed by the user.
+     *
+     * @param userInput command inputted by the user.
      * @return boolean.
      **/
     public static boolean userEndsGame(String userInput) {
@@ -133,7 +144,8 @@ public class Adventure {
     }
 
     /**
-     * Method that states the room's description and possible directions the user can move from the room.
+     * Method that states the room's description and possible directions the user can move.
+     *
      * @param currentRoom the room the user is currently in.
      * @return String.
      **/
@@ -146,8 +158,9 @@ public class Adventure {
 
     /**
      * Method that states when a user enters an invalid command, if the command begins with 'go'.
+     *
      * @param currentRoom the room the user is currently in.
-     * @param userInput the direction command the user inputs (e.g. go east, go west).
+     * @param userInput   the direction command the user inputs (e.g. go east, go west).
      * @return String.
      **/
     public static String printWrongDirection(String userInput, Room currentRoom) {
@@ -159,8 +172,9 @@ public class Adventure {
 
     /**
      * Method that states when a user enters an invalid command, and command doesn't begin with 'go'.
+     *
      * @param currentRoom the room the user is currently in.
-     * @param userInput the direction command the user inputs (e.g. go east, go west).
+     * @param userInput   the direction command the user inputs (e.g. go east, go west).
      * @return String.
      **/
     public static String printInvalidCommand(String userInput, Room currentRoom) {
