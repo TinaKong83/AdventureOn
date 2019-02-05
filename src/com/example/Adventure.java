@@ -24,19 +24,9 @@ public class Adventure {
     }
 
     public static void main(String[] arguments) throws UnirestException, MalformedURLException {
-        String url = "https://courses.engr.illinois.edu/cs126/adventure/siebel.json";
-        // Make an HTTP request to the above URL
-        try {
-            makeApiRequest(url);
-        } catch (UnirestException e) {
-//            e.printStackTrace();
-            System.out.println("Network not responding");
-        } catch (MalformedURLException e) {
-            System.out.println("Bad URL: " + url);
-        }
-
-        testBadUrl();
+        testAlternateUrl();
         System.out.println(beginGame());
+
         Scanner scanner = new Scanner(System.in);
         while (!gameEnded) {
             String originalInput = scanner.nextLine();
@@ -48,7 +38,7 @@ public class Adventure {
             String[] userInputArray = userInput.split(" ");
             String[] possibleDirectionArray = currentRoom.possibleDirection().toLowerCase().split(", ");
             if (userInputArray.length < 2) {
-                System.out.println(printInvalidCommand(userInput, currentRoom));
+                System.out.println(printInvalidCommand(originalInput, currentRoom));
             } else if (findDirectionInArray(possibleDirectionArray, userInput)) {
                 System.out.println(roomInformation(currentRoom));
             } else if (userInputArray[0].equals("go")
@@ -64,16 +54,14 @@ public class Adventure {
      * //TO DO: URL, MAKE METHODS THAT YOU CALL IN TO STRINGS, MAGIC NUMBERS, JAVADOC
      **/
 
-    public static void testBadUrl() throws UnirestException, MalformedURLException {
+    public static void testAlternateUrl() throws UnirestException, MalformedURLException {
         System.out.println("Please enter an alternate url.");
         Scanner scanner = new Scanner(System.in);
         String userUrl = scanner.nextLine();
 
-        // Make an HTTP request to the above URL
         try {
             makeApiRequest(userUrl);
         } catch (UnirestException e) {
-//            e.printStackTrace();
             System.out.println("Network not responding");
         } catch (MalformedURLException e) {
             System.out.println("Bad URL: " + userUrl);
@@ -90,9 +78,6 @@ public class Adventure {
         return beginGame;
     }
 
-    //method to check if an array contains a specific direction as an element
-    //use layout again but with a different url
-    //call http request on a different string
     public static boolean findDirectionInArray(String[] directionsArray, String userInput) {
         if (userInput == null || directionsArray == null || userInput.length() <= 1) {
             return false;
@@ -113,7 +98,7 @@ public class Adventure {
         if (currentRoom == null) {
             return false;
         }
-        return currentRoom.equals(layout.roomObjectFromName(layout.getEndingRoom()));
+        return currentRoom.getName().equals(layout.getEndingRoom());
     }
 
     public static boolean userEndsGame(String userInput) {

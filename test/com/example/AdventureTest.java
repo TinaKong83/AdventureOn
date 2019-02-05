@@ -1,25 +1,16 @@
 package com.example;
 
-import org.junit.Rule;
 import org.junit.Test;
-
-import com.google.gson.Gson;
 import org.junit.Before;
-import org.junit.Test;
-
 import java.net.MalformedURLException;
-import java.util.Arrays;
-
 import static org.junit.Assert.*;
 
 public class AdventureTest {
-    private static Adventure adventure;
+    private static Adventure adventure = new Adventure();
 
     @Before
     public void setUp() throws Exception {
-        Gson gson = new Gson();
-        Adventure.makeApiRequest("https://courses.engr.illinois.edu/cs126/adventure/siebel.json");
-        adventure = gson.fromJson(Data.getFileContentsAsString("Data/siebel.json"), Adventure.class);
+        adventure.makeApiRequest("https://courses.engr.illinois.edu/cs126/adventure/siebel.json");
     }
 
     @Test(expected = MalformedURLException.class)
@@ -33,7 +24,6 @@ public class AdventureTest {
         assertEquals("Siebel1112", adventure.getLayout().getRooms().get(3).roomFromDirection("NoRTHeast"));
         assertEquals("SiebelEntry", adventure.getLayout().getRooms().get(0).roomFromDirection("east"));
         assertEquals("SiebelBasement", adventure.getLayout().getRooms().get(5).roomFromDirection("Down"));
-        assertEquals("AcmOffice", adventure.getLayout().getRooms().get(1).roomFromDirection("northeast"));
         assertEquals("SiebelEastHallway", adventure.getLayout().getRooms().get(7).roomFromDirection("up"));
     }
 
@@ -65,7 +55,7 @@ public class AdventureTest {
 
         assertFalse(adventure.findDirectionInArray(directionsArray, "!"));
         assertFalse(adventure.findDirectionInArray(directionsArray, "go south"));
-        assertFalse(adventure.findDirectionInArray(directionsArray, "SOSIOJEJGSBONOENBOISENB"));
+        assertFalse(adventure.findDirectionInArray(directionsArray, "SOSIOJEJGSB ONOENBOISENB"));
         assertFalse(adventure.findDirectionInArray(directionsArray, ""));
         assertFalse(adventure.findDirectionInArray(directionsArray, "east"));
         assertFalse(adventure.findDirectionInArray(directionsArray, null));
@@ -135,10 +125,12 @@ public class AdventureTest {
         assertNull(adventure.printWrongDirection(null, null));
     }
 
-        @Test
+    @Test
     public void printInvalidCommand() {
         assertEquals("I don't understand 'go'\n" + "You are on Matthews, outside the Siebel Center\n" +
                 "From here, you can go: East", adventure.printInvalidCommand("go", adventure.getLayout().getRooms().get(0)));
+        assertEquals("I don't understand 'pO'\n" + "You are on Matthews, outside the Siebel Center\n" +
+                "From here, you can go: East", adventure.printInvalidCommand("pO", adventure.getLayout().getRooms().get(0)));
         assertEquals("I don't understand 'go '\n" + "You are on Matthews, outside the Siebel Center\n" +
                 "From here, you can go: East", adventure.printInvalidCommand("go ", adventure.getLayout().getRooms().get(0)));
         assertEquals("I don't understand ' '\n" + "You are in the basement of Siebel.  You see tables with students working and door to computer labs.\n" + "From here, you can go: Up",
@@ -147,5 +139,17 @@ public class AdventureTest {
                 adventure.printInvalidCommand("gophers are TASTY", adventure.getLayout().getRooms().get(7)));
         assertEquals("I don't understand 'UP'\n" + "You are in the basement of Siebel.  You see tables with students working and door to computer labs.\n" + "From here, you can go: Up",
                 adventure.printInvalidCommand("UP", adventure.getLayout().getRooms().get(7)));
+    }
+
+    @Test
+    public void reachedFinalRoom() {
+        assertFalse(adventure.reachedFinalRoom(adventure.getLayout().getRooms().get(0)));
+        assertFalse(adventure.reachedFinalRoom(adventure.getLayout().getRooms().get(7)));
+        assertTrue(adventure.reachedFinalRoom(adventure.getLayout().getRooms().get(6)));
+    }
+
+    @Test
+    public void reachedFinalRoomBadInput() {
+        assertFalse(adventure.reachedFinalRoom(null));
     }
 }
