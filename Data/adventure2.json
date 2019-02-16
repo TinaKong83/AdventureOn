@@ -1,0 +1,213 @@
+{
+  "startingRoom": "IlliniUnion",
+  "endingRoom": "Siebel1314",
+  "player": {
+    "items": [
+      {
+        "name": "Some item name???"
+      }
+    ]
+  },
+  "rooms": [
+    {
+      "name": "IlliniUnion",
+      "description": "You are outside the Illini Union, about to walk towards Green Street.",
+      "directions": [
+        {
+          "directionName": "Forward",
+          "room": "PandaExpress",
+          "enabled": "",
+          "validKeyNames": [
+            "some key name 1", "some key name 2"
+          ]
+        }
+      ],
+      "items": [
+        {
+          "name": "Some item name???"
+        }
+      ]
+    },
+    {
+      "name": "SiebelEntry",
+      "description": "You are in the west entry of Siebel Center.  You can see the elevator, the ACM office, and hallways to the north and east.",
+      "directions": [
+        {
+          "directionName": "West",
+          "room": "MatthewsStreet",
+          "enabled": "",
+          "validKeyNames": [
+            "some key name 1", "some key name 2"
+          ]
+        },
+        {
+          "directionName": "Northeast",
+          "room": "AcmOffice",
+          "enabled": "",
+          "validKeyNames": [
+            "some key name 1", "some key name 2"
+          ]
+        },
+        {
+          "directionName": "North",
+          "room": "SiebelNorthHallway",
+          "enabled": "",
+          "validKeyNames": [
+            "some key name 1", "some key name 2"
+          ]
+        },
+        {
+          "directionName": "East",
+          "room": "SiebelEastHallway",
+          "enabled": "",
+          "validKeyNames": [
+            "some key name 1", "some key name 2"
+          ]
+        }
+      ],
+      "items": [
+        {
+          "name": "Some item name???"
+        }
+      ]
+    },
+    {
+      "name": "AcmOffice",
+      "description": "You are in the ACM office.  There are lots of friendly ACM people.",
+      "directions": [
+        {
+          "directionName": "South",
+          "room": "SiebelEntry",
+          "enabled": "",
+          "validKeyNames": [
+            "some key name 1", "some key name 2"
+          ]
+        }
+      ],
+      "items": [
+        {
+          "name": "Some item name???"
+        }
+      ]
+    },
+    {
+      "name": "SiebelNorthHallway",
+      "description": "You are in the north hallway.  You can see Siebel 1112 and the door toward NCSA.",
+      "directions": [
+        {
+          "directionName": "South",
+          "room": "SiebelEntry",
+          "enabled": "",
+          "validKeyNames": [
+            "some key name 1", "some key name 2"
+          ]
+        },
+        {
+          "directionName": "NorthEast",
+          "room": "Siebel1112",
+          "enabled": "",
+          "validKeyNames": [
+            "some key name 1", "some key name 2"
+          ]
+        }
+      ],
+      "items": [
+        {
+          "name": "Some item name???"
+        }
+      ]
+    },
+    {
+      "name": "Siebel1112",
+      "description": "You are in Siebel 1112.  There is space for two code reviews in this room.",
+      "directions": [
+        {
+          "directionName": "West",
+          "room": "SiebelNorthHallway",
+          "enabled": "",
+          "validKeyNames": [
+            "some key name 1", "some key name 2"
+          ]
+        }
+      ],
+      "items": [
+        {
+          "name": "Some item name???"
+        }
+      ]
+    },
+    {
+      "name": "SiebelEastHallway",
+      "description": "You are in the east hallway.  You can see Einstein Bros' Bagels and a stairway.",
+      "directions": [
+        {
+          "directionName": "West",
+          "room": "SiebelEntry",
+          "enabled": "",
+          "validKeyNames": [
+            "some key name 1", "some key name 2"
+          ]
+        },
+        {
+          "directionName": "South",
+          "room": "Siebel1314",
+          "enabled": "",
+          "validKeyNames": [
+            "some key name 1", "some key name 2"
+          ]
+        },
+        {
+          "directionName": "Down",
+          "room": "SiebelBasement",
+          "enabled": "",
+          "validKeyNames": [
+            "some key name 1", "some key name 2"
+          ]
+        }
+      ],
+      "items": [
+        {
+          "name": "Some item name???"
+        }
+      ]
+    },
+    {
+      "name": "Siebel1314",
+      "description": "You are in Siebel 1314.  There are happy CS 126 students doing a code review.",
+      "directions": [
+        {
+          "directionName": "North",
+          "room": "SiebelEastHallway",
+          "enabled": "",
+          "validKeyNames": [
+            "some key name 1", "some key name 2"
+          ]
+        }
+      ],
+      "items": [
+        {
+          "name": "Some item name???"
+        }
+      ]
+    },
+    {
+      "name": "SiebelBasement",
+      "description": "You are in the basement of Siebel.  You see tables with students working and door to computer labs.",
+      "directions": [
+        {
+          "directionName": "Up",
+          "room": "SiebelEastHallway",
+          "enabled": "",
+          "validKeyNames": [
+            "some key name 1", "some key name 2"
+          ]
+        }
+      ],
+      "items": [
+        {
+          "name": "Some item name???"
+        }
+      ]
+    }
+  ]
+}
