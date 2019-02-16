@@ -1,11 +1,13 @@
 package com.example;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 
 public class Room {
     private String name;
     private String description;
     private Directions[] directions;
+    private ArrayList<Item> items;
 
     public String getName() {
         return name;
@@ -17,6 +19,10 @@ public class Room {
 
     public Directions[] getDirections() {
         return directions;
+    }
+
+    public ArrayList<Item> getItem() {
+        return items;
     }
 
     /**
