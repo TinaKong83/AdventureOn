@@ -20,7 +20,7 @@ public class Room {
     }
 
     /**
-     * Method that determines your boom given a user inputted direction.
+     * Method that determines your room given a user inputted direction.
      *
      * @param inputDirection   the direction command the user inputs (e.g. east, west).
      * @return String.
