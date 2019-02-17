@@ -1,10 +1,10 @@
 {
-  "startingRoom": "IlliniUnion",
-  "endingRoom": "Siebel1314",
+  "startingRoom": "FerrisWheel",
+  "endingRoom": "HolmesCastle",
   "player": {
     "items": [
       {
-        "name": "Some item name???"
+        "name": "lockpick"
       }
     ],
     "health": 900,
@@ -29,45 +29,44 @@
   ],
   "rooms": [
     {
-      "name": "IlliniUnion",
-      "description": "You are outside the Illini Union, about to walk towards Green Street.",
+      "name": "FerrisWheel",
+      "description": "You are standing beneath the Ferris Wheel of the Chicago World Fair. It was the tallest exposition in the Exposition.",
       "directions": [
         {
-          "directionName": "Forward",
-          "room": "PandaExpress",
+          "directionName": "East",
+          "room": "Woman'sBuilding",
           "enabled": "false",
           "validKeyNames": [
-            "some key name 1",
-            "some key name 2"
+            "lockpick"
           ]
         }
       ],
       "items": [
         {
-          "name": "Some item name you can pickup???"
+          "name": "penny"
+        },
+        {
+          "name": "spraypaint"
         }
       ],
       "monsterInRoom": {
-        "name": "bad monster",
-        "attack": 100,
-        "health": 800
       }
     },
     {
-      "name": "SiebelEntry",
-      "description": "You are in the west entry of Siebel Center.  You can see the elevator, the ACM office, and hallways to the north and east.",
+      "name": "Woman'sBuilding",
+      "description": "You are in the Woman's Building. It has an assembly room, library and Hall of Honor.",
       "directions": [
         {
           "directionName": "West",
-          "room": "MatthewsStreet",
-          "enabled": "true",
+          "room": "FerrisWheel",
+          "enabled": "false",
           "validKeyNames": [
-            null
+            "lockpick"
           ]
         },
         {
           "directionName": "Northeast",
-          "room": "AcmOffice",
+          "room": "VikingShip",
           "enabled": "true",
           "validKeyNames": [
             null
@@ -75,26 +74,18 @@
         },
         {
           "directionName": "North",
-          "room": "SiebelNorthHallway",
+          "room": "TransportationBuilding",
           "enabled": "false",
           "validKeyNames": [
-            "some item 1",
-            "some item 2"
-          ]
-        },
-        {
-          "directionName": "East",
-          "room": "SiebelEastHallway",
-          "enabled": "false",
-          "validKeyNames": [
-            "some key name 1",
-            "some key name 2"
+            "lockpick",
+            "map",
+            "spraypaint"
           ]
         }
       ],
       "items": [
         {
-          "name": "Some item name???"
+          "name": "bullet"
         }
       ],
       "monsterInRoom": {
@@ -104,12 +95,12 @@
       }
     },
     {
-      "name": "AcmOffice",
-      "description": "You are in the ACM office.  There are lots of friendly ACM people.",
+      "name": "VikingShip",
+      "description": "You are in Viking Ship. It is a replica of the Gokstad ship.",
       "directions": [
         {
           "directionName": "South",
-          "room": "SiebelEntry",
+          "room": "Woman'sBuilding",
           "enabled": "true",
           "validKeyNames": [
             null
@@ -118,19 +109,22 @@
       ],
       "items": [
         {
-          "name": "Some item name???"
+          "name": "map"
         }
       ],
       "monsterInRoom": {
+        "name": "bad monster",
+        "attack": 100,
+        "health": 800
       }
     },
     {
-      "name": "SiebelNorthHallway",
-      "description": "You are in the north hallway.  You can see Siebel 1112 and the door toward NCSA.",
+      "name": "TransportationBuilding",
+      "description": "You are in the Transportation Building. It is painted in various strong colors.",
       "directions": [
         {
           "directionName": "South",
-          "room": "SiebelEntry",
+          "room": "Woman'sBuilding",
           "enabled": "true",
           "validKeyNames": [
             null
@@ -138,7 +132,7 @@
         },
         {
           "directionName": "NorthEast",
-          "room": "Siebel1112",
+          "room": "PalaceOfFineArts",
           "enabled": "true",
           "validKeyNames": [
             null
@@ -147,119 +141,61 @@
       ],
       "items": [
         {
-          "name": "Some item name???"
+          "name": "zipper"
         }
       ],
       "monsterInRoom": {
       }
     },
     {
-      "name": "Siebel1112",
-      "description": "You are in Siebel 1112.  There is space for two code reviews in this room.",
+      "name": "PalaceOfFineArts",
+      "description": "You are in Palace of Fine Arts. It displays paintings, prints, drawing, sculpture, and metal work.",
       "directions": [
         {
           "directionName": "West",
-          "room": "SiebelNorthHallway",
+          "room": "HolmesCastle",
           "enabled": "false",
           "validKeyNames": [
-            "some key name 1",
-            "some key name 2"
-          ]
-        }
-      ],
-      "items": [
-        {
-          "name": "Some item name???"
-        }
-      ],
-      "monsterInRoom": {
-      }
-    },
-    {
-      "name": "SiebelEastHallway",
-      "description": "You are in the east hallway.  You can see Einstein Bros' Bagels and a stairway.",
-      "directions": [
-        {
-          "directionName": "West",
-          "room": "SiebelEntry",
-          "enabled": "",
-          "validKeyNames": [
-            "some key name 1",
-            "some key name 2"
+            "zippert",
+            "lockpick"
           ]
         },
         {
           "directionName": "South",
-          "room": "Siebel1314",
-          "enabled": "",
+          "room": "VikingShip",
+          "enabled": "true",
           "validKeyNames": [
-            "some key name 1",
-            "some key name 2"
-          ]
-        },
-        {
-          "directionName": "Down",
-          "room": "SiebelBasement",
-          "enabled": "",
-          "validKeyNames": [
-            "some key name 1",
-            "some key name 2"
+            null
           ]
         }
       ],
       "items": [
         {
-          "name": "Some item name???"
+          "name": "bullet"
         }
       ],
       "monsterInRoom": {
       }
     },
     {
-      "name": "Siebel1314",
-      "description": "You are in Siebel 1314.  There are happy CS 126 students doing a code review.",
+      "name": "HolmesCastle",
+      "description": "You are in the castle of H.H. Holmes, an American serial killer who confessed to 27 murders.",
       "directions": [
         {
           "directionName": "North",
-          "room": "SiebelEastHallway",
-          "enabled": "",
+          "room": "VikingShip",
+          "enabled": "true",
           "validKeyNames": [
-            "some key name 1",
-            "some key name 2"
+            null
           ]
         }
       ],
       "items": [
         {
-          "name": "Some item name???"
+          "name": "bomb"
         }
       ],
       "monsterInRoom": {
-      }
-    },
-    {
-      "name": "SiebelBasement",
-      "description": "You are in the basement of Siebel.  You see tables with students working and door to computer labs.",
-      "directions": [
-        {
-          "directionName": "Up",
-          "room": "SiebelEastHallway",
-          "enabled": "",
-          "validKeyNames": [
-            "some key name 1",
-            "some key name 2"
-          ]
-        }
-      ],
-      "items": [
-        {
-          "name": "Some item name???"
-        }
-      ],
-      "monsterInRoom": {
-        "name": "happy monster",
-        "attack": 130,
-        "health": 700
       }
     }
   ]

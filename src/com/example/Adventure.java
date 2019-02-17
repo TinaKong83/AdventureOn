@@ -27,7 +27,6 @@ public class Adventure {
     private static Directions directionCommand;
     private static Monster monster;
     private static boolean gameEnded = false;
-    private static boolean directionIsLocked = false;
 
     public Room getCurrentRoom() {
         return currentRoom;
@@ -38,12 +37,18 @@ public class Adventure {
     }
 
     public static void main(String[] arguments) throws UnirestException, MalformedURLException {
-        player = layout.getPlayer();
+        //player = layout.getPlayer();
         testAlternateUrl();
         System.out.println(beginGame());
 
         Scanner scanner = new Scanner(System.in);
         while (!gameEnded) {
+
+            System.out.println(player.getItems().get(0).getName());
+            System.out.println(currentRoom.getName());
+            System.out.println(currentRoom.getMonsterInRoom().getName());
+            System.out.println(currentRoom.getItems().get(0).getName());
+
             String originalInput = scanner.nextLine();
             String userInput = originalInput.toLowerCase();
             if (userEndsGame(originalInput) || reachedFinalRoom(currentRoom)) {
@@ -51,22 +56,23 @@ public class Adventure {
                 break;
             }
             String[] userInputArray = userInput.split(" ");
-            //String[] possibleDirectionArray = currentRoom.possibleDirection().toLowerCase().split(", ");
             if (userInputArray.length < 2) {
                 System.out.println(printInvalidCommand(originalInput, currentRoom));
 
                 //user said "go east", with some valid direction command
                 //so go to your new room
             } else if (findDirectionInArray(currentRoom.getDirections(), userInput)) {
+
+                System.out.println(directionCommand.getDirectionName());
+
                 if (directionCommand.getEnabled().equals("true")) {
                     currentRoom = moveToNewRoom(directionCommand.getDirectionName(), currentRoom);
+                    System.out.println("the new room is:" + currentRoom.toString());
                     System.out.println(roomInformation(player, currentRoom, currentRoom.getMonsterInRoom()));
-                }
-
-                //direction is locked, but user has the item
-                if (directionCommand.getEnabled().equals("false")) {
+                } else if (directionCommand.getEnabled().equals("false")) {
                     System.out.println("The player needs an item to unlock this direction.");
                     if (notHaveValidKey(directionCommand.getValidKeyNames(), player.getItems())) {
+                        System.out.println("valid keys are: " + directionCommand.getValidKeyNames());
                         System.out.println("The user does not have a valid key. Pick a different direction.");
                         System.out.println(roomInformation(player, currentRoom, currentRoom.getMonsterInRoom()));
                     } else {
@@ -106,7 +112,7 @@ public class Adventure {
         } catch (MalformedURLException e) {
             System.out.println("Bad URL: " + userUrl);
             System.out.println("We will be defaulting to the original url" + "\n");
-            makeApiRequest("https://courses.engr.illinois.edu/cs126/adventure/siebel.json");
+            makeApiRequest("https://pastebin.com/raw/4dAsWstx");
         }
     }
 
@@ -274,16 +280,6 @@ public class Adventure {
         return Collections.disjoint(validKeyNames, playerItems);
     }
 
-
-    /*public static ArrayList<String> listToString(ArrayList<Item> availableRoomItems) {
-        //Cited from: https://stackoverflow.com/questions/21201415/how-can-i-convert-arraylistobject-to-arrayliststring-or-arraylisttimestamp
-        ArrayList<String> stringsList = new ArrayList<>();
-        for (Item item : availableRoomItems) {
-            stringsList.add(item != null ? item.toString() : null);
-        }
-        return stringsList;
-    }*/
-
     static void makeApiRequest(String url) throws UnirestException, MalformedURLException {
         final HttpResponse<String> stringHttpResponse;
 
@@ -296,6 +292,7 @@ public class Adventure {
             String json = stringHttpResponse.getBody();
             Gson gson = new Gson();
             layout = gson.fromJson(json, Layout.class);
+            player = layout.getPlayer();
             currentRoom = layout.roomObjectFromName(layout.getStartingRoom());
         }
     }

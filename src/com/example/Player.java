@@ -9,6 +9,10 @@ public class Player {
     private int health;
     private int attack;
 
+    public Layout getLayout() {
+        return layout;
+    }
+
     public ArrayList<Item> getItems() {
         return items;
     }

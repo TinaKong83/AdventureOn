@@ -8,11 +8,13 @@ import java.net.MalformedURLException;
 import static org.junit.Assert.*;
 
 public class AdventureTest {
-    private static Adventure adventure = new Adventure();
+    private Adventure adventure = new Adventure();
+    private Player player = new Player();
 
     @Before
     public void setUp() throws Exception {
-        adventure.makeApiRequest("https://courses.engr.illinois.edu/cs126/adventure/siebel.json");
+        player = adventure.getLayout().getPlayer();
+        adventure.makeApiRequest("https://pastebin.com/raw/4dAsWstx");
     }
 
     @Test(expected = MalformedURLException.class)
