@@ -7,7 +7,10 @@ public class Room {
     private String name;
     private String description;
     private Directions[] directions;
+
+    //items that are available to pick up in the room
     private ArrayList<Item> items;
+    private Monster monsterInRoom;
 
     public String getName() {
         return name;
@@ -21,8 +24,21 @@ public class Room {
         return directions;
     }
 
-    public ArrayList<Item> getItem() {
+    public ArrayList<Item> getItems() {
         return items;
+    }
+
+    public Monster getMonsterInRoom() {
+        return monsterInRoom;
+    }
+
+    public Item getItemObjectFromName(String inputItemName, ArrayList<Item> availableRoomItems) {
+        for (int i = 0; i < availableRoomItems.size(); i++) {
+            if (availableRoomItems.get(i).getName().equals(inputItemName)) {
+                return availableRoomItems.get(i);
+            }
+        }
+        return null;
     }
 
     /**

@@ -1,10 +1,14 @@
 package com.example;
 
+import java.util.ArrayList;
+
 public class Directions {
     private String directionName;
     private String room;
     private String enabled;
-    private String[] validKeyNames;
+
+    //array of keys that can enable a direction
+    private ArrayList<String> validKeyNames;
 
     public String getDirectionName() {
         return directionName;
@@ -18,7 +22,7 @@ public class Directions {
         return enabled;
     }
 
-    public String[] getValidKeyNames() {
+    public ArrayList<String> getValidKeyNames() {
         return validKeyNames;
     }
 }

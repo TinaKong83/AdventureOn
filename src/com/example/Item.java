@@ -6,4 +6,11 @@ public class Item {
     public String getName() {
         return name;
     }
+
+    /*public Item getItemFromString(String inputItemName) {
+        if (inputItemName == null) {
+            return null;
+        }
+
+    }*/
 }

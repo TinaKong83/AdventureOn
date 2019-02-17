@@ -74,14 +74,14 @@ public class AdventureTest {
 
     @Test
     public void findDirectionInArrayMatthewsStreetGoodInput() {
-        String[] directionsArray = adventure.getLayout().getRooms().get(0).possibleDirection().split(", ");
+        Directions[] directionsArray = adventure.getLayout().getRooms().get(0).getDirections();
         assertTrue(adventure.findDirectionInArray(directionsArray, "go EAST"));
         assertTrue(adventure.findDirectionInArray(directionsArray, "GO EaST"));
     }
 
     @Test
     public void findDirectionInArrayMatthewsStreetBadInput() {
-        String[] directionsArray = adventure.getLayout().getRooms().get(0).possibleDirection().split(", ");
+        Directions[] directionsArray = adventure.getLayout().getRooms().get(0).getDirections();
 
         assertFalse(adventure.findDirectionInArray(directionsArray, "!"));
         assertFalse(adventure.findDirectionInArray(directionsArray, "go south"));
@@ -93,13 +93,13 @@ public class AdventureTest {
 
     @Test
     public void findDirectionInArraySiebelEastHallwayGoodInput() {
-        String[] directionsArray = adventure.getLayout().getRooms().get(3).possibleDirection().split(", ");
+        Directions[] directionsArray = adventure.getLayout().getRooms().get(3).getDirections();
         assertTrue(adventure.findDirectionInArray(directionsArray, "GO nOrthEast"));
     }
 
     @Test
     public void findDirectionInArraySiebelEastHallwayBadInput() {
-        String[] directionsArray = adventure.getLayout().getRooms().get(3).possibleDirection().split(", ");
+        Directions[] directionsArray = adventure.getLayout().getRooms().get(3).getDirections();
         assertFalse(adventure.findDirectionInArray(directionsArray, "south"));
         assertFalse(adventure.findDirectionInArray(directionsArray, "go south!!"));
         assertFalse(adventure.findDirectionInArray(directionsArray, "@"));
@@ -124,19 +124,20 @@ public class AdventureTest {
     @Test
     public void roomInformationGoodInput() {
         assertEquals("You are on Matthews, outside the Siebel Center\n" + "From here, you can go: East",
-                adventure.roomInformation(adventure.getLayout()
-                        .getRooms()
-                        .get(0)));
+                adventure.roomInformation(adventure.getLayout().getPlayer(),
+                        adventure.getLayout().getRooms().get(0),
+                        adventure.getLayout().getRooms().get(0).getMonsterInRoom()));
         assertEquals("You are in the north hallway.  You can see Siebel 1112 and the door toward NCSA."
                         + "\n" + "From here, you can go: South, NorthEast",
-                adventure.roomInformation(adventure.getLayout()
-                        .getRooms()
-                        .get(3)));
+                adventure.roomInformation(adventure.getLayout().getPlayer(),
+                        adventure.getLayout().getRooms().get(3),
+                        adventure.getLayout().getRooms().get(3).getMonsterInRoom()));
     }
 
     @Test
     public void roomInformationBadInput() {
-        assertNull(adventure.roomInformation(null));
+        assertNull(adventure.roomInformation(null,
+                null, null));
     }
 
     @Test

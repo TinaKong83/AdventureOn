@@ -6,8 +6,27 @@
       {
         "name": "Some item name???"
       }
-    ]
+    ],
+    "health": 900,
+    "attack": 300
   },
+  "monsters": [
+    {
+      "name": "bad monster",
+      "attack": 100,
+      "health": 800
+    },
+    {
+      "name": "evil monster",
+      "attack": 120,
+      "health": 900
+    },
+    {
+      "name": "happy monster",
+      "attack": 130,
+      "health": 700
+    }
+  ],
   "rooms": [
     {
       "name": "IlliniUnion",
@@ -16,17 +35,23 @@
         {
           "directionName": "Forward",
           "room": "PandaExpress",
-          "enabled": "",
+          "enabled": "false",
           "validKeyNames": [
-            "some key name 1", "some key name 2"
+            "some key name 1",
+            "some key name 2"
           ]
         }
       ],
       "items": [
         {
-          "name": "Some item name???"
+          "name": "Some item name you can pickup???"
         }
-      ]
+      ],
+      "monsterInRoom": {
+        "name": "bad monster",
+        "attack": 100,
+        "health": 800
+      }
     },
     {
       "name": "SiebelEntry",
@@ -35,33 +60,35 @@
         {
           "directionName": "West",
           "room": "MatthewsStreet",
-          "enabled": "",
+          "enabled": "true",
           "validKeyNames": [
-            "some key name 1", "some key name 2"
+            null
           ]
         },
         {
           "directionName": "Northeast",
           "room": "AcmOffice",
-          "enabled": "",
+          "enabled": "true",
           "validKeyNames": [
-            "some key name 1", "some key name 2"
+            null
           ]
         },
         {
           "directionName": "North",
           "room": "SiebelNorthHallway",
-          "enabled": "",
+          "enabled": "false",
           "validKeyNames": [
-            "some key name 1", "some key name 2"
+            "some item 1",
+            "some item 2"
           ]
         },
         {
           "directionName": "East",
           "room": "SiebelEastHallway",
-          "enabled": "",
+          "enabled": "false",
           "validKeyNames": [
-            "some key name 1", "some key name 2"
+            "some key name 1",
+            "some key name 2"
           ]
         }
       ],
@@ -69,7 +96,12 @@
         {
           "name": "Some item name???"
         }
-      ]
+      ],
+      "monsterInRoom": {
+        "name": "evil monster",
+        "attack": 120,
+        "health": 900
+      }
     },
     {
       "name": "AcmOffice",
@@ -78,9 +110,9 @@
         {
           "directionName": "South",
           "room": "SiebelEntry",
-          "enabled": "",
+          "enabled": "true",
           "validKeyNames": [
-            "some key name 1", "some key name 2"
+            null
           ]
         }
       ],
@@ -88,7 +120,9 @@
         {
           "name": "Some item name???"
         }
-      ]
+      ],
+      "monsterInRoom": {
+      }
     },
     {
       "name": "SiebelNorthHallway",
@@ -97,17 +131,17 @@
         {
           "directionName": "South",
           "room": "SiebelEntry",
-          "enabled": "",
+          "enabled": "true",
           "validKeyNames": [
-            "some key name 1", "some key name 2"
+            null
           ]
         },
         {
           "directionName": "NorthEast",
           "room": "Siebel1112",
-          "enabled": "",
+          "enabled": "true",
           "validKeyNames": [
-            "some key name 1", "some key name 2"
+            null
           ]
         }
       ],
@@ -115,7 +149,9 @@
         {
           "name": "Some item name???"
         }
-      ]
+      ],
+      "monsterInRoom": {
+      }
     },
     {
       "name": "Siebel1112",
@@ -124,9 +160,10 @@
         {
           "directionName": "West",
           "room": "SiebelNorthHallway",
-          "enabled": "",
+          "enabled": "false",
           "validKeyNames": [
-            "some key name 1", "some key name 2"
+            "some key name 1",
+            "some key name 2"
           ]
         }
       ],
@@ -134,7 +171,9 @@
         {
           "name": "Some item name???"
         }
-      ]
+      ],
+      "monsterInRoom": {
+      }
     },
     {
       "name": "SiebelEastHallway",
@@ -145,7 +184,8 @@
           "room": "SiebelEntry",
           "enabled": "",
           "validKeyNames": [
-            "some key name 1", "some key name 2"
+            "some key name 1",
+            "some key name 2"
           ]
         },
         {
@@ -153,7 +193,8 @@
           "room": "Siebel1314",
           "enabled": "",
           "validKeyNames": [
-            "some key name 1", "some key name 2"
+            "some key name 1",
+            "some key name 2"
           ]
         },
         {
@@ -161,7 +202,8 @@
           "room": "SiebelBasement",
           "enabled": "",
           "validKeyNames": [
-            "some key name 1", "some key name 2"
+            "some key name 1",
+            "some key name 2"
           ]
         }
       ],
@@ -169,7 +211,9 @@
         {
           "name": "Some item name???"
         }
-      ]
+      ],
+      "monsterInRoom": {
+      }
     },
     {
       "name": "Siebel1314",
@@ -180,7 +224,8 @@
           "room": "SiebelEastHallway",
           "enabled": "",
           "validKeyNames": [
-            "some key name 1", "some key name 2"
+            "some key name 1",
+            "some key name 2"
           ]
         }
       ],
@@ -188,7 +233,9 @@
         {
           "name": "Some item name???"
         }
-      ]
+      ],
+      "monsterInRoom": {
+      }
     },
     {
       "name": "SiebelBasement",
@@ -199,7 +246,8 @@
           "room": "SiebelEastHallway",
           "enabled": "",
           "validKeyNames": [
-            "some key name 1", "some key name 2"
+            "some key name 1",
+            "some key name 2"
           ]
         }
       ],
@@ -207,7 +255,12 @@
         {
           "name": "Some item name???"
         }
-      ]
+      ],
+      "monsterInRoom": {
+        "name": "happy monster",
+        "attack": 130,
+        "health": 700
+      }
     }
   ]
 }

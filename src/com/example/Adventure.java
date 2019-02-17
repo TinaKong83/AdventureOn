@@ -7,7 +7,10 @@ import com.mashape.unirest.http.exceptions.UnirestException;
 
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.Scanner;
+import java.util.*;
+
+//enabled: if true, by default the room is open
+//if false, you need an item to unlock that room
 
 /**
  * A simple text-based “adventure game” that takes a description of the world in JSON and lets
@@ -19,8 +22,12 @@ public class Adventure {
     private static final int STATUS_OK = 200;
     private static final int COMMAND_INDEX = 3;
     private static Layout layout;
+    private static Player player;
     private static Room currentRoom;
+    private static Directions directionCommand;
+    private static Monster monster;
     private static boolean gameEnded = false;
+    private static boolean directionIsLocked = false;
 
     public Room getCurrentRoom() {
         return currentRoom;
@@ -31,6 +38,7 @@ public class Adventure {
     }
 
     public static void main(String[] arguments) throws UnirestException, MalformedURLException {
+        player = layout.getPlayer();
         testAlternateUrl();
         System.out.println(beginGame());
 
@@ -43,14 +51,39 @@ public class Adventure {
                 break;
             }
             String[] userInputArray = userInput.split(" ");
-            String[] possibleDirectionArray = currentRoom.possibleDirection().toLowerCase().split(", ");
+            //String[] possibleDirectionArray = currentRoom.possibleDirection().toLowerCase().split(", ");
             if (userInputArray.length < 2) {
                 System.out.println(printInvalidCommand(originalInput, currentRoom));
-            } else if (findDirectionInArray(possibleDirectionArray, userInput)) {
-                System.out.println(roomInformation(currentRoom));
+
+                //user said "go east", with some valid direction command
+                //so go to your new room
+            } else if (findDirectionInArray(currentRoom.getDirections(), userInput)) {
+                if (directionCommand.getEnabled().equals("true")) {
+                    currentRoom = moveToNewRoom(directionCommand.getDirectionName(), currentRoom);
+                    System.out.println(roomInformation(player, currentRoom, currentRoom.getMonsterInRoom()));
+                }
+
+                //direction is locked, but user has the item
+                if (directionCommand.getEnabled().equals("false")) {
+                    System.out.println("The player needs an item to unlock this direction.");
+                    if (notHaveValidKey(directionCommand.getValidKeyNames(), player.getItems())) {
+                        System.out.println("The user does not have a valid key. Pick a different direction.");
+                        System.out.println(roomInformation(player, currentRoom, currentRoom.getMonsterInRoom()));
+                    } else {
+                        currentRoom = moveToNewRoom(directionCommand.getDirectionName(), currentRoom);
+                        System.out.println(roomInformation(player, currentRoom, currentRoom.getMonsterInRoom()));
+                    }
+                }
             } else if (userInputArray[0].equals("go")
-                    && !findDirectionInArray(possibleDirectionArray, userInput)) {
+                    && !findDirectionInArray(currentRoom.getDirections(), userInput)) {
                 System.out.println(printWrongDirection(originalInput, currentRoom));
+                //PICKUP ITEM IN A ROOM
+            } else if (userInputArray[0].equals("pickup")) {
+                String itemCommand = userInputArray[1];
+                if (itemExistsInRoom(itemCommand, currentRoom.getItems())) {
+                    Item itemObject = currentRoom.getItemObjectFromName(itemCommand, currentRoom.getItems());
+                    pickUpItem(itemObject, currentRoom.getItems(), player.getItems());
+                }
             } else {
                 System.out.println(printInvalidCommand(originalInput, currentRoom));
             }
@@ -96,24 +129,31 @@ public class Adventure {
      * @param userInput,       the direction command the user inputs (e.g. go east, go west).
      * @return boolean.
      **/
-    public static boolean findDirectionInArray(String[] directionsArray, String userInput) {
+    public static boolean findDirectionInArray(Directions[] directionsArray, String userInput) {
         if (userInput == null || directionsArray == null) {
             return false;
         }
         String[] userInputArray = userInput.toLowerCase().split(" ");
         if (!userInputArray[0].equals("go")) {
             return false;
-        }
+        }//use trim?
         userInput = userInput.substring(COMMAND_INDEX).toLowerCase();
         for (int i = 0; i < directionsArray.length; i++) {
-            if (directionsArray[i] != null && directionsArray[i].toLowerCase().equals(userInput)) {
-                String currentDirection = directionsArray[i];
-                String newRoomName = currentRoom.roomFromDirection(currentDirection);
-                currentRoom = layout.roomObjectFromName(newRoomName);
+            if (directionsArray[i] != null && directionsArray[i].getDirectionName().toLowerCase().equals(userInput)) {
+                directionCommand = directionsArray[i];
+                //String currentDirection = directionsArray[i].getDirectionName();
+                //String newRoomName = currentRoom.roomFromDirection(currentDirection);
+                //currentRoom = layout.roomObjectFromName(newRoomName);
                 return true;
             }
         }
         return false;
+    }
+
+    public static Room moveToNewRoom(String currentDirectionName, Room currentRoom) {
+        String newRoomName = currentRoom.roomFromDirection(currentDirectionName);
+        currentRoom = layout.roomObjectFromName(newRoomName);
+        return currentRoom;
     }
 
     /**
@@ -149,11 +189,22 @@ public class Adventure {
      * @param currentRoom the room the user is currently in.
      * @return String.
      **/
-    public static String roomInformation(Room currentRoom) {
+
+    public static String roomInformation(Player player, Room currentRoom, Monster monsterInRoom) {
+        StringBuilder roomInformation = new StringBuilder();
         if (currentRoom == null) {
             return null;
         }
-        return currentRoom.getDescription() + "\nFrom here, you can go: " + currentRoom.possibleDirection();
+        if (monsterInRoom == null || monsterInRoom.toString().equals("{}")) {
+            return "There are no monsters in the room.\n" + currentRoom.getDescription()
+                    + "\nFrom here, you can go: " + currentRoom.possibleDirection();
+        }
+        roomInformation.append("The monster in this room is: " + monsterInRoom.getName());
+        player.fightMonster(monsterInRoom, player);
+
+        roomInformation.append(currentRoom.getDescription() + "\nFrom here, you can go: "
+                + currentRoom.possibleDirection());
+        return roomInformation.toString();
     }
 
     /**
@@ -167,7 +218,8 @@ public class Adventure {
         if (userInput == null || currentRoom == null) {
             return null;
         }
-        return "I can't go '" + userInput.substring(COMMAND_INDEX) + "'\n" + roomInformation(currentRoom);
+        return "I can't go '" + userInput.substring(COMMAND_INDEX) + "'\n"
+                + roomInformation(player, currentRoom, currentRoom.getMonsterInRoom());
     }
 
     /**
@@ -181,8 +233,56 @@ public class Adventure {
         if (userInput == null || currentRoom == null) {
             return null;
         }
-        return "I don't understand '" + userInput + "'\n" + roomInformation(currentRoom);
+        return "I don't understand '" + userInput + "'\n"
+                + roomInformation(player, currentRoom, currentRoom.getMonsterInRoom());
     }
+
+    public static boolean itemExistsInRoom(String itemToPickUp, ArrayList<Item> availableRoomItems) {
+        for (int i = 0; i < availableRoomItems.size(); i++) {
+            if (availableRoomItems.get(i).getName().equals(itemToPickUp)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    //use "item" with "direction"
+    public static boolean playerHasItem(String itemName, ArrayList<Item> playerItems) {
+        for (int i = 0; i < playerItems.size(); i++) {
+            if (playerItems.get(i).getName().equals(itemName)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static ArrayList<Item> pickUpItem(Item itemToPickUp, ArrayList<Item> availableRoomItems,
+                                             ArrayList<Item> playerItems) {
+        //if user says "pickup item", pick up that item
+        for (int i = 0; i < availableRoomItems.size(); i++) {
+            if (availableRoomItems.get(i).getName().equals(itemToPickUp.getName())) {
+                playerItems.add(itemToPickUp);
+                return playerItems;
+            }
+        }
+        return playerItems;
+    }
+
+    public static boolean notHaveValidKey(ArrayList<String> validKeyNames, ArrayList<Item> playerItems) {
+        //disjoint returns true if 2 array lists have no elements in common
+        //returns false if the 2 array lists have an element in common
+        return Collections.disjoint(validKeyNames, playerItems);
+    }
+
+
+    /*public static ArrayList<String> listToString(ArrayList<Item> availableRoomItems) {
+        //Cited from: https://stackoverflow.com/questions/21201415/how-can-i-convert-arraylistobject-to-arrayliststring-or-arraylisttimestamp
+        ArrayList<String> stringsList = new ArrayList<>();
+        for (Item item : availableRoomItems) {
+            stringsList.add(item != null ? item.toString() : null);
+        }
+        return stringsList;
+    }*/
 
     static void makeApiRequest(String url) throws UnirestException, MalformedURLException {
         final HttpResponse<String> stringHttpResponse;
