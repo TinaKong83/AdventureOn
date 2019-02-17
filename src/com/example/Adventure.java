@@ -9,9 +9,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.*;
 
-//enabled: if true, by default the room is open
-//if false, you need an item to unlock that room
-
 /**
  * A simple text-based “adventure game” that takes a description of the world in JSON and lets
  * a user interactively navigate through the world.
@@ -43,11 +40,10 @@ public class Adventure {
 
         Scanner scanner = new Scanner(System.in);
         while (!gameEnded) {
-
-            System.out.println(player.getItems().get(0).getName());
+            /*System.out.println(player.getItems().get(0).getName());
             System.out.println(currentRoom.getName());
             System.out.println(currentRoom.getMonsterInRoom().getName());
-            System.out.println(currentRoom.getItems().get(0).getName());
+            System.out.println(currentRoom.getItems().get(0).getName());*/
 
             String originalInput = scanner.nextLine();
             String userInput = originalInput.toLowerCase();
@@ -56,39 +52,50 @@ public class Adventure {
                 break;
             }
             String[] userInputArray = userInput.split(" ");
-            if (userInputArray.length < 2) {
+            if (!userValidCommand(userInputArray)) {
                 System.out.println(printInvalidCommand(originalInput, currentRoom));
 
                 //user said "go east", with some valid direction command
                 //so go to your new room
-            } else if (findDirectionInArray(currentRoom.getDirections(), userInput)) {
-
-                System.out.println(directionCommand.getDirectionName());
-
+            } else if (userInputArray[0].toLowerCase().equals("go")
+                    && findDirectionInArray(currentRoom.getDirections(), userInput)) {
                 if (directionCommand.getEnabled().equals("true")) {
+                    System.out.println("Move in direction: " + directionCommand.getDirectionName());
                     currentRoom = moveToNewRoom(directionCommand.getDirectionName(), currentRoom);
-                    System.out.println("the new room is:" + currentRoom.toString());
+                    System.out.println("The new room is: " + currentRoom.getName());
                     System.out.println(roomInformation(player, currentRoom, currentRoom.getMonsterInRoom()));
-                } else if (directionCommand.getEnabled().equals("false")) {
+                } else {
                     System.out.println("The player needs an item to unlock this direction.");
-                    if (notHaveValidKey(directionCommand.getValidKeyNames(), player.getItems())) {
-                        System.out.println("valid keys are: " + directionCommand.getValidKeyNames());
-                        System.out.println("The user does not have a valid key. Pick a different direction.");
+                    System.out.println("Valid keys are: " + directionCommand.getValidKeyNames());
+                    if (!hasValidKey(directionCommand.getValidKeyNames(), player.getItems())) {
+                        System.out.println("The user does not have a valid key for "
+                                + directionCommand.getDirectionName());
                         System.out.println(roomInformation(player, currentRoom, currentRoom.getMonsterInRoom()));
-                    } else {
-                        currentRoom = moveToNewRoom(directionCommand.getDirectionName(), currentRoom);
-                        System.out.println(roomInformation(player, currentRoom, currentRoom.getMonsterInRoom()));
+                    } else if (hasValidKey(directionCommand.getValidKeyNames(), player.getItems())) {
+                        System.out.println("You have a valid item. To access this direction, enter " +
+                                "'use item with direction'");
+                        //System.out.println(roomInformation(player, currentRoom, currentRoom.getMonsterInRoom()));
                     }
                 }
-            } else if (userInputArray[0].equals("go")
+            } else if (userInputArray.length >= 2 && userInputArray[0].toLowerCase().equals("go")
                     && !findDirectionInArray(currentRoom.getDirections(), userInput)) {
                 System.out.println(printWrongDirection(originalInput, currentRoom));
-                //PICKUP ITEM IN A ROOM
-            } else if (userInputArray[0].equals("pickup")) {
+            } else if (userInputArray.length >= 4 && findDirectionInArray(currentRoom.getDirections(), userInput)
+                    && useItemWithDirection(userInput, currentRoom, directionCommand.getValidKeyNames())) {
+                System.out.println("move in direction: " + directionCommand.getDirectionName());
+                currentRoom = moveToNewRoom(directionCommand.getDirectionName(), currentRoom);
+                System.out.println("the new room is: " + currentRoom.getName());
+                System.out.println(roomInformation(player, currentRoom, currentRoom.getMonsterInRoom()));
+            } else if (userInputArray.length >= 2 && userInputArray[0].toLowerCase().equals("pickup")) {
                 String itemCommand = userInputArray[1];
                 if (itemExistsInRoom(itemCommand, currentRoom.getItems())) {
                     Item itemObject = currentRoom.getItemObjectFromName(itemCommand, currentRoom.getItems());
                     pickUpItem(itemObject, currentRoom.getItems(), player.getItems());
+                    System.out.println("You have picked up: " + itemObject.getName());
+                    //System.out.println(roomInformation(player, currentRoom, currentRoom.getMonsterInRoom()));
+                } else {
+                    System.out.println("This item dose not exist.");
+                    //System.out.println(roomInformation(player, currentRoom, currentRoom.getMonsterInRoom()));
                 }
             } else {
                 System.out.println(printInvalidCommand(originalInput, currentRoom));
@@ -112,7 +119,7 @@ public class Adventure {
         } catch (MalformedURLException e) {
             System.out.println("Bad URL: " + userUrl);
             System.out.println("We will be defaulting to the original url" + "\n");
-            makeApiRequest("https://pastebin.com/raw/4dAsWstx");
+            makeApiRequest("https://pastebin.com/raw/jH7KvXCz");
         }
     }
 
@@ -140,10 +147,14 @@ public class Adventure {
             return false;
         }
         String[] userInputArray = userInput.toLowerCase().split(" ");
-        if (!userInputArray[0].equals("go")) {
+        /*if (!userValidCommand(userInputArray)) {
             return false;
-        }//use trim?
-        userInput = userInput.substring(COMMAND_INDEX).toLowerCase();
+        }*/
+
+        //use key with east
+        //the direction name (e.g. east, west, south)
+        userInput = userInputArray[userInputArray.length - 1].toLowerCase();
+        //userInput = userInput.substring(COMMAND_INDEX).toLowerCase();
         for (int i = 0; i < directionsArray.length; i++) {
             if (directionsArray[i] != null && directionsArray[i].getDirectionName().toLowerCase().equals(userInput)) {
                 directionCommand = directionsArray[i];
@@ -152,6 +163,34 @@ public class Adventure {
                 //currentRoom = layout.roomObjectFromName(newRoomName);
                 return true;
             }
+        }
+        return false;
+    }
+
+    public static boolean userValidCommand(String[] userInputArray) {
+        if (userInputArray.length < 2) {
+            return false;
+        }
+        if (userInputArray[0].toLowerCase().equals("go") || userInputArray[0].toLowerCase().equals("pickup")) {
+            return true;
+        }
+        if (userInputArray.length >= 4 && userInputArray[0].toLowerCase().equals("use")
+                && userInputArray[2].toLowerCase().equals("with")) {
+            return true;
+        }
+        return false;
+    }
+
+    public static boolean useItemWithDirection(String userInput, Room currentRoom, ArrayList<String> validKeyNames) {
+        String[] userInputArray = userInput.split(" ");
+        if (userInputArray.length < 4) {
+            return false;
+        }
+        String itemName = userInputArray[1].toLowerCase();
+        String directionCommand = userInputArray[3];
+        if (validKeyNames.contains(itemName) && userInputArray[0].toLowerCase().equals("use")
+                && userInputArray[2].equals("with")) {
+            return true;
         }
         return false;
     }
@@ -201,13 +240,13 @@ public class Adventure {
         if (currentRoom == null) {
             return null;
         }
-        if (monsterInRoom == null || monsterInRoom.toString().equals("{}")) {
+        if (currentRoom.getMonsterInRoom().getName() == null) {
             return "There are no monsters in the room.\n" + currentRoom.getDescription()
                     + "\nFrom here, you can go: " + currentRoom.possibleDirection();
+        } else {
+            roomInformation.append("The monster in this room is: " + monsterInRoom.getName() + "\n");
+            player.fightMonster(monsterInRoom, player);
         }
-        roomInformation.append("The monster in this room is: " + monsterInRoom.getName());
-        player.fightMonster(monsterInRoom, player);
-
         roomInformation.append(currentRoom.getDescription() + "\nFrom here, you can go: "
                 + currentRoom.possibleDirection());
         return roomInformation.toString();
@@ -274,10 +313,19 @@ public class Adventure {
         return playerItems;
     }
 
-    public static boolean notHaveValidKey(ArrayList<String> validKeyNames, ArrayList<Item> playerItems) {
+    public static boolean hasValidKey(ArrayList<String> validKeyNames, ArrayList<Item> playerItems) {
         //disjoint returns true if 2 array lists have no elements in common
         //returns false if the 2 array lists have an element in common
-        return Collections.disjoint(validKeyNames, playerItems);
+
+        //return Collections.disjoint(validKeyNames, playerItems);
+        for (int i = 0; i < validKeyNames.size(); i++) {
+            for (int j = 0; j < playerItems.size(); j++) {
+                if (validKeyNames.get(i).equals(playerItems.get(j).getName())) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     static void makeApiRequest(String url) throws UnirestException, MalformedURLException {

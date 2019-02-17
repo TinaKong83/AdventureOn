@@ -29,7 +29,7 @@ public class Player {
     public static void fightMonster(Monster monster, Player player) {
         int playerHealth = player.getHealth();
         int monsterHealth = monster.getHealth();
-        System.out.println("As you move in this direction, you must battle: " + monster.getName());
+        System.out.println("Before proceeding, you must battle: " + monster.getName());
         System.out.println("Monster has this much health: " + monster.getHealth());
         System.out.println("Player has this much health: " + player.getHealth());
 
@@ -40,16 +40,16 @@ public class Player {
             if (userAttack.equals("attack")) {
                 monsterHealth = monsterHealth - player.getAttack();
                 System.out.println("You have attacked the monster. Monster now has: " + monsterHealth + " HP");
+                if (monsterHealth <= 0) {
+                    System.out.println("You have successfully defeated the monster! Go to your room.\n");
+                    break;
+                }
             } else {
                 System.out.println("I don't understand this command. Monster is now attacking.");
             }
-            //monster's attack damage is some random number btw 0 and 100
             playerHealth = playerHealth - monster.getAttack();
             System.out.println("The monster has attacked. Player now has: " + playerHealth + " HP");
-            if (monsterHealth <= 0) {
-                System.out.println("You have successfully defeated the monster! Go to your room.");
-                break;
-            } else if (playerHealth <= 0) {
+            if (playerHealth <= 0) {
                 System.out.println("The monster has killed you! Try again.");
                 playerHealth = playerHealth + 500;
             }

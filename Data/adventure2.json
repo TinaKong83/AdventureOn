@@ -1,6 +1,6 @@
 {
-  "startingRoom": "FerrisWheel",
-  "endingRoom": "HolmesCastle",
+  "startingRoom": "Ferris Wheel",
+  "endingRoom": "Holmes Castle",
   "player": {
     "items": [
       {
@@ -29,12 +29,12 @@
   ],
   "rooms": [
     {
-      "name": "FerrisWheel",
+      "name": "Ferris Wheel",
       "description": "You are standing beneath the Ferris Wheel of the Chicago World Fair. It was the tallest exposition in the Exposition.",
       "directions": [
         {
           "directionName": "East",
-          "room": "Woman'sBuilding",
+          "room": "Woman's Building",
           "enabled": "false",
           "validKeyNames": [
             "lockpick"
@@ -50,15 +50,16 @@
         }
       ],
       "monsterInRoom": {
+        "name": ""
       }
     },
     {
-      "name": "Woman'sBuilding",
+      "name": "Woman's Building",
       "description": "You are in the Woman's Building. It has an assembly room, library and Hall of Honor.",
       "directions": [
         {
           "directionName": "West",
-          "room": "FerrisWheel",
+          "room": "Ferris Wheel",
           "enabled": "false",
           "validKeyNames": [
             "lockpick"
@@ -66,7 +67,7 @@
         },
         {
           "directionName": "Northeast",
-          "room": "VikingShip",
+          "room": "Viking Ship",
           "enabled": "true",
           "validKeyNames": [
             null
@@ -74,7 +75,7 @@
         },
         {
           "directionName": "North",
-          "room": "TransportationBuilding",
+          "room": "Transportation Building",
           "enabled": "false",
           "validKeyNames": [
             "lockpick",
@@ -95,12 +96,12 @@
       }
     },
     {
-      "name": "VikingShip",
+      "name": "Viking Ship",
       "description": "You are in Viking Ship. It is a replica of the Gokstad ship.",
       "directions": [
         {
           "directionName": "South",
-          "room": "Woman'sBuilding",
+          "room": "Woman's Building",
           "enabled": "true",
           "validKeyNames": [
             null
@@ -119,12 +120,12 @@
       }
     },
     {
-      "name": "TransportationBuilding",
+      "name": "Transportation Building",
       "description": "You are in the Transportation Building. It is painted in various strong colors.",
       "directions": [
         {
           "directionName": "South",
-          "room": "Woman'sBuilding",
+          "room": "Woman's Building",
           "enabled": "true",
           "validKeyNames": [
             null
@@ -132,7 +133,7 @@
         },
         {
           "directionName": "NorthEast",
-          "room": "PalaceOfFineArts",
+          "room": "Palace Of Fine Arts",
           "enabled": "true",
           "validKeyNames": [
             null
@@ -145,15 +146,16 @@
         }
       ],
       "monsterInRoom": {
+        "name": ""
       }
     },
     {
-      "name": "PalaceOfFineArts",
+      "name": "Palace Of Fine Arts",
       "description": "You are in Palace of Fine Arts. It displays paintings, prints, drawing, sculpture, and metal work.",
       "directions": [
         {
           "directionName": "West",
-          "room": "HolmesCastle",
+          "room": "Holmes Castle",
           "enabled": "false",
           "validKeyNames": [
             "zippert",
@@ -162,7 +164,7 @@
         },
         {
           "directionName": "South",
-          "room": "VikingShip",
+          "room": "Viking Ship",
           "enabled": "true",
           "validKeyNames": [
             null
@@ -175,15 +177,16 @@
         }
       ],
       "monsterInRoom": {
+        "name": ""
       }
     },
     {
-      "name": "HolmesCastle",
+      "name": "Holmes Castle",
       "description": "You are in the castle of H.H. Holmes, an American serial killer who confessed to 27 murders.",
       "directions": [
         {
           "directionName": "North",
-          "room": "VikingShip",
+          "room": "Viking Ship",
           "enabled": "true",
           "validKeyNames": [
             null
@@ -196,6 +199,7 @@
         }
       ],
       "monsterInRoom": {
+        "name": ""
       }
     }
   ]
