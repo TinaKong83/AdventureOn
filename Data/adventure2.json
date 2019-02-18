@@ -1,205 +1,264 @@
 {
-  "startingRoom": "Ferris Wheel",
-  "endingRoom": "Holmes Castle",
-  "player": {
-    "items": [
+  "startingRoom":"Ferris Wheel",
+  "endingRoom":"Holmes Castle",
+  "player":{
+    "items":[
       {
-        "name": "lockpick"
+        "name":"lockpick"
       }
     ],
-    "health": 900,
-    "attack": 300
+    "health":900,
+    "attack":300
   },
-  "monsters": [
+  "monsters":[
     {
-      "name": "bad monster",
-      "attack": 100,
-      "health": 800
+      "name":"bad monster",
+      "attack":100,
+      "health":800
     },
     {
-      "name": "evil monster",
-      "attack": 120,
-      "health": 900
+      "name":"evil monster",
+      "attack":120,
+      "health":900
     },
     {
-      "name": "happy monster",
-      "attack": 130,
-      "health": 700
+      "name":"happy monster",
+      "attack":130,
+      "health":700
     }
   ],
-  "rooms": [
+  "rooms":[
     {
-      "name": "Ferris Wheel",
-      "description": "You are standing beneath the Ferris Wheel of the Chicago World Fair. It was the tallest exposition in the Exposition.",
-      "directions": [
+      "name":"Ferris Wheel",
+      "description":"You are standing beneath the Ferris Wheel of the Chicago World Fair. It was the tallest exposition in the Exposition.",
+      "directions":[
         {
-          "directionName": "East",
-          "room": "Woman's Building",
-          "enabled": "false",
-          "validKeyNames": [
+          "directionName":"East",
+          "room":"Woman's Building",
+          "enabled":"false",
+          "validKeyNames":[
             "lockpick"
+          ]
+        },
+        {
+          "directionName":"Southeast",
+          "room":"Transportation Building",
+          "enabled":"false",
+          "validKeyNames":[
+            "lockpick",
+            "gum"
           ]
         }
       ],
-      "items": [
+      "items":[
         {
-          "name": "penny"
+          "name":"penny"
         },
         {
-          "name": "spraypaint"
+          "name":"spraypaint"
+        },
+        {
+          "name":"gum"
         }
       ],
-      "monsterInRoom": {
-        "name": ""
+      "monsterInRoom":{
+        "name":""
       }
     },
     {
-      "name": "Woman's Building",
-      "description": "You are in the Woman's Building. It has an assembly room, library and Hall of Honor.",
-      "directions": [
+      "name":"Woman's Building",
+      "description":"You are in the Woman's Building. It has an assembly room, library and Hall of Honor.",
+      "directions":[
         {
-          "directionName": "West",
-          "room": "Ferris Wheel",
-          "enabled": "false",
-          "validKeyNames": [
+          "directionName":"West",
+          "room":"Ferris Wheel",
+          "enabled":"false",
+          "validKeyNames":[
             "lockpick"
           ]
         },
         {
-          "directionName": "Northeast",
-          "room": "Viking Ship",
-          "enabled": "true",
-          "validKeyNames": [
+          "directionName":"Northeast",
+          "room":"Viking Ship",
+          "enabled":"true",
+          "validKeyNames":[
             null
           ]
         },
         {
-          "directionName": "North",
-          "room": "Transportation Building",
-          "enabled": "false",
-          "validKeyNames": [
+          "directionName":"North",
+          "room":"Transportation Building",
+          "enabled":"false",
+          "validKeyNames":[
             "lockpick",
             "map",
             "spraypaint"
           ]
         }
       ],
-      "items": [
+      "items":[
         {
-          "name": "bullet"
+          "name":"bullet"
         }
       ],
-      "monsterInRoom": {
-        "name": "evil monster",
-        "attack": 120,
-        "health": 900
+      "monsterInRoom":{
+        "name":""
       }
     },
     {
-      "name": "Viking Ship",
-      "description": "You are in Viking Ship. It is a replica of the Gokstad ship.",
-      "directions": [
+      "name":"Viking Ship",
+      "description":"You are in Viking Ship. It is a replica of the Gokstad ship.",
+      "directions":[
         {
-          "directionName": "South",
-          "room": "Woman's Building",
-          "enabled": "true",
-          "validKeyNames": [
-            null
-          ]
-        }
-      ],
-      "items": [
-        {
-          "name": "map"
-        }
-      ],
-      "monsterInRoom": {
-        "name": "bad monster",
-        "attack": 100,
-        "health": 800
-      }
-    },
-    {
-      "name": "Transportation Building",
-      "description": "You are in the Transportation Building. It is painted in various strong colors.",
-      "directions": [
-        {
-          "directionName": "South",
-          "room": "Woman's Building",
-          "enabled": "true",
-          "validKeyNames": [
+          "directionName":"South",
+          "room":"Woman's Building",
+          "enabled":"true",
+          "validKeyNames":[
             null
           ]
         },
         {
-          "directionName": "NorthEast",
-          "room": "Palace Of Fine Arts",
-          "enabled": "true",
-          "validKeyNames": [
+          "directionName":"Northwest",
+          "room":"Jackson Park Wooded Islands",
+          "enabled":"true",
+          "validKeyNames":[
             null
           ]
         }
       ],
-      "items": [
+      "items":[
         {
-          "name": "zipper"
+          "name":"map"
         }
       ],
-      "monsterInRoom": {
-        "name": ""
+      "monsterInRoom":{
+        "name":"bad monster",
+        "attack":100,
+        "health":800
       }
     },
     {
-      "name": "Palace Of Fine Arts",
-      "description": "You are in Palace of Fine Arts. It displays paintings, prints, drawing, sculpture, and metal work.",
-      "directions": [
+      "name":"Transportation Building",
+      "description":"You are in the Transportation Building. It is painted in various strong colors.",
+      "directions":[
         {
-          "directionName": "West",
-          "room": "Holmes Castle",
-          "enabled": "false",
-          "validKeyNames": [
+          "directionName":"South",
+          "room":"Woman's Building",
+          "enabled":"true",
+          "validKeyNames":[
+            null
+          ]
+        },
+        {
+          "directionName":"NorthEast",
+          "room":"Palace Of Fine Arts",
+          "enabled":"true",
+          "validKeyNames":[
+            null
+          ]
+        },
+        {
+          "directionName":"North",
+          "room":"Holmes Castle",
+          "enabled":"false",
+          "validKeyNames":[
+            "zippert",
+            "lockpick"
+          ]
+        }
+      ],
+      "items":[
+        {
+          "name":"zipper"
+        }
+      ],
+      "monsterInRoom":{
+        "name":""
+      }
+    },
+    {
+      "name":"Palace Of Fine Arts",
+      "description":"You are in Palace of Fine Arts. It displays paintings, prints, drawing, sculpture, and metal work.",
+      "directions":[
+        {
+          "directionName":"West",
+          "room":"Holmes Castle",
+          "enabled":"false",
+          "validKeyNames":[
             "zippert",
             "lockpick"
           ]
         },
         {
-          "directionName": "South",
-          "room": "Viking Ship",
-          "enabled": "true",
-          "validKeyNames": [
-            null
+          "directionName":"South",
+          "room":"Viking Ship",
+          "enabled":"true",
+          "validKeyNames":[
+            "bomb",
+            "map"
           ]
         }
       ],
-      "items": [
+      "items":[
         {
-          "name": "bullet"
+          "name":"bullet"
         }
       ],
-      "monsterInRoom": {
-        "name": ""
+      "monsterInRoom":{
+        "name":""
       }
     },
     {
-      "name": "Holmes Castle",
-      "description": "You are in the castle of H.H. Holmes, an American serial killer who confessed to 27 murders.",
-      "directions": [
+      "name":"Holmes Castle",
+      "description":"You are in the castle of H.H. Holmes, an American serial killer who confessed to 27 murders.",
+      "directions":[
         {
-          "directionName": "North",
-          "room": "Viking Ship",
-          "enabled": "true",
-          "validKeyNames": [
+          "directionName":"North",
+          "room":"Viking Ship",
+          "enabled":"true",
+          "validKeyNames":[
             null
           ]
         }
       ],
-      "items": [
+      "items":[
         {
-          "name": "bomb"
+          "name":"bomb"
         }
       ],
-      "monsterInRoom": {
-        "name": ""
+      "monsterInRoom":{
+        "name":""
+      }
+    },
+    {
+      "name":"Jackson Park Wooded Islands",
+      "description":"You are at Jackson Park, which contains serene Japanese gardens, woodland trails and beaches.",
+      "directions":[
+        {
+          "directionName":"North",
+          "room":"Viking Ship",
+          "enabled":"true",
+          "validKeyNames":[
+            null
+          ]
+        },
+        {
+          "directionName":"Southeast",
+          "room":"Holmes Castle",
+          "enabled":"false",
+          "validKeyNames":[
+            "gum",
+            "bullet"
+          ]
+        }
+      ],
+      "items":[
+        {
+          "name":"bomb"
+        }
+      ],
+      "monsterInRoom":{
+        "name":""
       }
     }
   ]

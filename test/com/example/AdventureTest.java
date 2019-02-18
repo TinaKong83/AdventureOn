@@ -13,8 +13,8 @@ public class AdventureTest {
 
     @Before
     public void setUp() throws Exception {
-        player = adventure.getLayout().getPlayer();
-        adventure.makeApiRequest("https://pastebin.com/raw/jH7KvXCz");
+        //player = adventure.getLayout().getPlayer();
+        Adventure.makeApiRequest("https://pastebin.com/raw/v73bWEiw");
     }
 
     @Test(expected = MalformedURLException.class)
