@@ -12,19 +12,19 @@
   },
   "monsters":[
     {
-      "name":"bad monster",
-      "attack":100,
-      "health":800
-    },
-    {
-      "name":"evil monster",
+      "name":"Mothman Monster",
       "attack":120,
       "health":900
     },
     {
-      "name":"happy monster",
+      "name":"Ghost of Al Capone",
       "attack":130,
       "health":700
+    },
+    {
+      "name":"Serial Killer",
+      "attack":100,
+      "health":800
     }
   ],
   "rooms":[
@@ -132,9 +132,6 @@
         }
       ],
       "monsterInRoom":{
-        "name":"bad monster",
-        "attack":100,
-        "health":800
       }
     },
     {
@@ -162,7 +159,7 @@
           "room":"Holmes Castle",
           "enabled":"false",
           "validKeyNames":[
-            "zippert",
+            "zipper",
             "lockpick"
           ]
         }
@@ -173,7 +170,9 @@
         }
       ],
       "monsterInRoom":{
-        "name":""
+        "name":"Serial Killer",
+        "attack":100,
+        "health":800
       }
     },
     {
@@ -185,7 +184,7 @@
           "room":"Holmes Castle",
           "enabled":"false",
           "validKeyNames":[
-            "zippert",
+            "zipper",
             "lockpick"
           ]
         },
@@ -205,7 +204,9 @@
         }
       ],
       "monsterInRoom":{
-        "name":""
+        "name":"Ghost of Al Capone",
+        "attack":130,
+        "health":700
       }
     },
     {
@@ -227,7 +228,9 @@
         }
       ],
       "monsterInRoom":{
-        "name":""
+        "name":"Serial Killer",
+        "attack":100,
+        "health":800
       }
     },
     {
@@ -258,7 +261,9 @@
         }
       ],
       "monsterInRoom":{
-        "name":""
+        "name":"Mothman Monster",
+        "attack":120,
+        "health":900
       }
     }
   ]

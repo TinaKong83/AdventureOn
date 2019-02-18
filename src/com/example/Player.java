@@ -4,7 +4,8 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Player {
-    private static Layout layout;
+    private static Adventure adventure = new Adventure();
+    private static Layout layout = new Layout();
     private ArrayList<Item> items;
     private int health;
     private int attack;
@@ -26,7 +27,8 @@ public class Player {
     }
 
     //the player keeps knocking 200 points off monster, while player health is randomly subtracted
-    public static void fightMonster(Monster monster, Player player) {
+    public static void fightMonster(Monster monster, Player player, Room currentRoom) {
+        currentRoom = adventure.getCurrentRoom();
         int playerHealth = player.getHealth();
         int monsterHealth = monster.getHealth();
         System.out.println("Before proceeding, you must battle: " + monster.getName());
