@@ -35,7 +35,7 @@ public class Layout {
      * @param inputRoomName   the name of the room.
      * @return Room.
      **/
-    public Room roomObjectFromName(String inputRoomName) {
+    public Room getRoomObjectFromName(String inputRoomName) {
         if (inputRoomName == null) {
             return null;
         }

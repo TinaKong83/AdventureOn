@@ -18,27 +18,39 @@ import java.util.*;
 public class Adventure {
     private static final int STATUS_OK = 200;
     private static final int COMMAND_INDEX = 3;
+    private static Adventure adventure = new Adventure();
     private static Layout layout;
     private static Player player;
     private static Room currentRoom;
     private static Directions directionCommand;
     private static boolean gameEnded = false;
 
+    public Directions getDirectionCommand() {
+        return directionCommand;
+    }
+
     public Room getCurrentRoom() {
         return currentRoom;
+    }
+
+    public Player getPlayer() {
+        return player;
     }
 
     public Layout getLayout() {
         return layout;
     }
 
-    public static void main(String[] arguments) throws UnirestException, MalformedURLException {
-        testAlternateUrl();
-        System.out.println(beginGame());
-        playGame();
+    public static void main(String[] arguments) throws Exception {
+        final String COMMAND_URL = arguments[0];
+        //String commandFile = arguments[0];
+        adventure.testAlternateUrl(COMMAND_URL);
+        //adventure.setUp(commandFile);
+        System.out.println(adventure.beginGame());
+        adventure.playGame();
     }
 
-    public static void playGame() {
+    public void playGame() {
         Scanner scanner = new Scanner(System.in);
         while (!gameEnded) {
             String originalInput = scanner.nextLine();
@@ -68,7 +80,7 @@ public class Adventure {
         }
     }
 
-    public static void userEnablesDirection() {
+    public void userEnablesDirection() {
         if (directionCommand.getEnabled().equals("true")) {
             currentRoom = moveToNewRoom(directionCommand.getDirectionName(), currentRoom);
             System.out.println(roomInformation(player, currentRoom, currentRoom.getMonsterInRoom()));
@@ -81,19 +93,20 @@ public class Adventure {
      * Method that allows user to specify an alternate URL.
      * If the URL is invalid, default to original URL.
      **/
-    public static void testAlternateUrl() throws UnirestException, MalformedURLException {
-        System.out.println("Please enter an alternate url.");
+    public void testAlternateUrl(String urlCommand) throws Exception {
+        /*System.out.println("Please enter a url.");
         Scanner scanner = new Scanner(System.in);
-        String userUrl = scanner.nextLine();
+        String userUrl = scanner.nextLine();*/
 
         try {
-            makeApiRequest(userUrl);
+            makeApiRequest(urlCommand);
         } catch (UnirestException e) {
             System.out.println("Network not responding");
         } catch (MalformedURLException e) {
-            System.out.println("Bad URL: " + userUrl);
-            System.out.println("We will be defaulting to the original url" + "\n");
-            makeApiRequest("https://pastebin.com/raw/jUtE9EA3");
+            System.out.println("Bad URL: " + urlCommand);
+            System.out.println("We will be defaulting to the file instead" + "\n");
+            adventure.setUp("Data/adventure2.json");
+            //makeApiRequest(urlCommand);
         }
     }
 
@@ -102,47 +115,65 @@ public class Adventure {
      *
      * @return String of starting room information.
      **/
-    public static String beginGame() {
+    public String beginGame() {
         String beginGame = "Your journey begins here";
         beginGame = beginGame + "\n" + currentRoom.getDescription();
         beginGame = beginGame + "\n" + "From here, you can go: " + currentRoom.possibleDirection();
         return beginGame;
     }
 
-    public static String descriptionAndDirections(Room currentRoom) {
+    public void setUp(String fileName) throws Exception {
+        Gson gson = new Gson();
+        layout = gson.fromJson(Data.getFileContentsAsString(fileName), Layout.class);
+        player = layout.getPlayer();
+        currentRoom = layout.getRoomObjectFromName(layout.getStartingRoom());
+    }
+
+    public String descriptionAndDirections(Room currentRoom) {
         String getRoomInstruction = currentRoom.getDescription();
         getRoomInstruction = getRoomInstruction + "\nFrom here, you can go: " + currentRoom.possibleDirection();
         return getRoomInstruction;
     }
 
-    public static void playerUnlocksDirection(Directions directionCommand) {
+    public void playerUnlocksDirection(Directions directionCommand) {
         System.out.println("The player needs an item to unlock this direction.");
         System.out.println("Valid keys are: " + directionCommand.getValidKeyNames());
         if (!hasValidKey(directionCommand.getValidKeyNames(), player.getItems())) {
             System.out.println("The user does not have a valid key for "
                     + directionCommand.getDirectionName());
             System.out.println(descriptionAndDirections(currentRoom));
-        } else if (hasValidKey(directionCommand.getValidKeyNames(), player.getItems())) {
+        } else {
             System.out.println("You have a valid item. To access this direction, enter " +
                     "'use item with direction'");
         }
     }
 
-    public static void getItemInformation(String itemCommand) {
+    public String getItemInformation(String itemCommand) {
         Item itemObject = currentRoom.getItemObjectFromName(itemCommand, currentRoom.getItems());
-        pickUpItem(itemObject, currentRoom.getItems(), player.getItems());
-        System.out.println("You have picked up: " + itemObject.getName());
-        System.out.println(descriptionAndDirections(currentRoom));
+        if (itemObject != null) {
+            pickUpItem(itemObject, currentRoom.getItems(), player.getItems());
+        }
+        return "Your current items are: " + listOfPlayerItems() + "\n" + descriptionAndDirections(currentRoom);
     }
 
-    public static void examineItem(String[] userInputArray) {
+    public void examineItem(String[] userInputArray) {
         String itemCommand = userInputArray[1];
         if (itemExistsInRoom(itemCommand, currentRoom.getItems())) {
-            getItemInformation(itemCommand);
+            System.out.println(getItemInformation(itemCommand));
         } else {
             System.out.println("This item does not exist.");
             System.out.println(descriptionAndDirections(currentRoom));
         }
+    }
+
+    public String listOfPlayerItems() {
+        StringBuilder stringBuilder = new StringBuilder();
+        for (int i = 0; i < player.getItems().size() - 1; i++) {
+            stringBuilder.append(player.getItems().get(i).getName());
+            stringBuilder.append(", ");
+        }
+        stringBuilder.append(player.getItems().get(player.getItems().size() - 1).getName());
+        return stringBuilder.toString();
     }
 
     /**
@@ -152,7 +183,7 @@ public class Adventure {
      * @param userInput,       the direction command the user inputs (e.g. go east, go west).
      * @return boolean.
      **/
-    public static boolean findDirectionInArray(Directions[] directionsArray, String userInput) {
+    public boolean findDirectionInArray(Directions[] directionsArray, String userInput) {
         if (userInput == null || directionsArray == null) {
             return false;
         }
@@ -170,7 +201,7 @@ public class Adventure {
         return false;
     }
 
-    public static boolean userValidCommand(String[] userInputArray) {
+    public boolean userValidCommand(String[] userInputArray) {
         if (userInputArray.length < 2) {
             return false;
         }
@@ -184,13 +215,12 @@ public class Adventure {
         return false;
     }
 
-    public static boolean useItemWithDirection(String userInput, Room currentRoom, ArrayList<String> validKeyNames) {
+    public boolean useItemWithDirection(String userInput, Room currentRoom, ArrayList<String> validKeyNames) {
         String[] userInputArray = userInput.split(" ");
         if (userInputArray.length < 4) {
             return false;
         }
         String itemName = userInputArray[1].toLowerCase();
-        String directionCommand = userInputArray[3];
         if (validKeyNames.contains(itemName) && userInputArray[0].toLowerCase().equals("use")
                 && userInputArray[2].equals("with") && playerHasItem(itemName, player.getItems())) {
             return true;
@@ -198,9 +228,9 @@ public class Adventure {
         return false;
     }
 
-    public static Room moveToNewRoom(String currentDirectionName, Room currentRoom) {
+    public Room moveToNewRoom(String currentDirectionName, Room currentRoom) {
         String newRoomName = currentRoom.roomFromDirection(currentDirectionName);
-        currentRoom = layout.roomObjectFromName(newRoomName);
+        currentRoom = layout.getRoomObjectFromName(newRoomName);
         return currentRoom;
     }
 
@@ -210,7 +240,7 @@ public class Adventure {
      * @param currentRoom the room the user is currently in.
      * @return boolean.
      **/
-    public static boolean reachedFinalRoom(Room currentRoom) {
+    public boolean reachedFinalRoom(Room currentRoom) {
         if (currentRoom == null) {
             return false;
         }
@@ -223,7 +253,7 @@ public class Adventure {
      * @param userInput command inputted by the user.
      * @return boolean.
      **/
-    public static boolean userEndsGame(String userInput) {
+    public boolean userEndsGame(String userInput) {
         if (userInput == null) {
             return false;
         }
@@ -238,7 +268,7 @@ public class Adventure {
      * @return String.
      **/
 
-    public static String roomInformation(Player player, Room currentRoom, Monster monsterInRoom) {
+    public String roomInformation(Player player, Room currentRoom, Monster monsterInRoom) {
         StringBuilder roomInformation = new StringBuilder();
         if (currentRoom == null) {
             return null;
@@ -262,7 +292,7 @@ public class Adventure {
      * @param userInput   the direction command the user inputs (e.g. go east, go west).
      * @return String.
      **/
-    public static String printWrongDirection(String userInput, Room currentRoom) {
+    public String printWrongDirection(String userInput, Room currentRoom) {
         if (userInput == null || currentRoom == null) {
             return null;
         }
@@ -277,7 +307,7 @@ public class Adventure {
      * @param userInput   the direction command the user inputs (e.g. go east, go west).
      * @return String.
      **/
-    public static String printInvalidCommand(String userInput, Room currentRoom) {
+    public String printInvalidCommand(String userInput, Room currentRoom) {
         if (userInput == null || currentRoom == null) {
             return null;
         }
@@ -285,7 +315,7 @@ public class Adventure {
                 + descriptionAndDirections(currentRoom);
     }
 
-    public static boolean itemExistsInRoom(String itemToPickUp, ArrayList<Item> availableRoomItems) {
+    public boolean itemExistsInRoom(String itemToPickUp, ArrayList<Item> availableRoomItems) {
         for (int i = 0; i < availableRoomItems.size(); i++) {
             if (availableRoomItems.get(i).getName().equals(itemToPickUp)) {
                 return true;
@@ -294,8 +324,7 @@ public class Adventure {
         return false;
     }
 
-    //use "item" with "direction"
-    public static boolean playerHasItem(String itemName, ArrayList<Item> playerItems) {
+    public boolean playerHasItem(String itemName, ArrayList<Item> playerItems) {
         for (int i = 0; i < playerItems.size(); i++) {
             if (playerItems.get(i).getName().equals(itemName)) {
                 return true;
@@ -304,19 +333,16 @@ public class Adventure {
         return false;
     }
 
-    public static ArrayList<Item> pickUpItem(Item itemToPickUp, ArrayList<Item> availableRoomItems,
-                                             ArrayList<Item> playerItems) {
-        //if user says "pickup item", pick up that item
+    public void pickUpItem(Item itemToPickUp, ArrayList<Item> availableRoomItems,
+                           ArrayList<Item> playerItems) {
         for (int i = 0; i < availableRoomItems.size(); i++) {
             if (availableRoomItems.get(i).getName().equals(itemToPickUp.getName())) {
                 playerItems.add(itemToPickUp);
-                return playerItems;
             }
         }
-        return playerItems;
     }
 
-    public static boolean hasValidKey(ArrayList<String> validKeyNames, ArrayList<Item> playerItems) {
+    public boolean hasValidKey(ArrayList<String> validKeyNames, ArrayList<Item> playerItems) {
         for (int i = 0; i < validKeyNames.size(); i++) {
             for (int j = 0; j < playerItems.size(); j++) {
                 if (validKeyNames.get(i).equals(playerItems.get(j).getName())) {
@@ -340,7 +366,7 @@ public class Adventure {
             Gson gson = new Gson();
             layout = gson.fromJson(json, Layout.class);
             player = layout.getPlayer();
-            currentRoom = layout.roomObjectFromName(layout.getStartingRoom());
+            currentRoom = layout.getRoomObjectFromName(layout.getStartingRoom());
         }
     }
 }

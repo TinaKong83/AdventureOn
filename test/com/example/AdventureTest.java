@@ -13,8 +13,7 @@ public class AdventureTest {
 
     @Before
     public void setUp() throws Exception {
-        //player = adventure.getLayout().getPlayer();
-        Adventure.makeApiRequest("https://pastebin.com/raw/jUtE9EA3");
+        Adventure.makeApiRequest("https://pastebin.com/raw/4uKfWzNL");
     }
 
     @Test(expected = MalformedURLException.class)
@@ -26,18 +25,18 @@ public class AdventureTest {
 
     @Test
     public void roomFromDirectionGoodInput() {
-        assertEquals("Siebel1112", adventure.getLayout()
+        assertEquals("Palace Of Fine Arts", adventure.getLayout()
                 .getRooms()
                 .get(3)
                 .roomFromDirection("NoRTHeast"));
-        assertEquals("SiebelEntry", adventure.getLayout()
+        assertEquals("Woman's Building", adventure.getLayout()
                 .getRooms()
                 .get(0)
                 .roomFromDirection("east"));
-        assertEquals("SiebelEastHallway", adventure.getLayout()
+        assertEquals("Holmes Castle", adventure.getLayout()
                 .getRooms()
-                .get(7)
-                .roomFromDirection("Up"));
+                .get(6)
+                .roomFromDirection("SOUTHeast"));
     }
 
     @Test
@@ -56,33 +55,33 @@ public class AdventureTest {
                 .roomFromDirection(""));
         assertNull(adventure.getLayout()
                 .getRooms()
-                .get(7)
+                .get(6)
                 .roomFromDirection("go east"));
     }
 
     @Test
     public void possibleDirections() {
-        assertEquals("East", adventure.getLayout()
+        assertEquals("East, Southeast", adventure.getLayout()
                 .getRooms()
                 .get(0)
                 .possibleDirection());
-        assertEquals("West, Northeast, North, East", adventure.getLayout()
+        assertEquals("West, Northeast, North", adventure.getLayout()
                 .getRooms().get(1)
                 .possibleDirection());
-        assertEquals("Up", adventure.getLayout().getRooms()
-                .get(7)
+        assertEquals("North, Southeast", adventure.getLayout().getRooms()
+                .get(6)
                 .possibleDirection());
     }
 
     @Test
-    public void findDirectionInArrayMatthewsStreetGoodInput() {
+    public void findDirectionInArrayFerrisWheelGoodInput() {
         Directions[] directionsArray = adventure.getLayout().getRooms().get(0).getDirections();
         assertTrue(adventure.findDirectionInArray(directionsArray, "go EAST"));
         assertTrue(adventure.findDirectionInArray(directionsArray, "GO EaST"));
     }
 
     @Test
-    public void findDirectionInArrayMatthewsStreetBadInput() {
+    public void findDirectionInArrayFerrisWheelBadInput() {
         Directions[] directionsArray = adventure.getLayout().getRooms().get(0).getDirections();
 
         assertFalse(adventure.findDirectionInArray(directionsArray, "!"));
@@ -94,13 +93,13 @@ public class AdventureTest {
     }
 
     @Test
-    public void findDirectionInArraySiebelEastHallwayGoodInput() {
+    public void findDirectionInArrayTransportBuildingGoodInput() {
         Directions[] directionsArray = adventure.getLayout().getRooms().get(3).getDirections();
         assertTrue(adventure.findDirectionInArray(directionsArray, "GO nOrthEast"));
     }
 
     @Test
-    public void findDirectionInArraySiebelEastHallwayBadInput() {
+    public void findDirectionInArrayTransportBuildingBadInput() {
         Directions[] directionsArray = adventure.getLayout().getRooms().get(3).getDirections();
         assertFalse(adventure.findDirectionInArray(directionsArray, "south"));
         assertFalse(adventure.findDirectionInArray(directionsArray, "go south!!"));
@@ -123,9 +122,12 @@ public class AdventureTest {
         assertFalse(adventure.userEndsGame(null));
     }
 
-    @Test
+    /*@Test
     public void roomInformationGoodInput() {
-        assertEquals("You are on Matthews, outside the Siebel Center\n" + "From here, you can go: East",
+        /*assertEquals("There are no monsters in the room.\n" +
+                        "You are standing beneath the Ferris Wheel of the Chicago World Fair. It was the tallest " +
+                        "exposition in the Exposition.\n" +
+                        "From here, you can go: East, Southeast",
                 adventure.roomInformation(adventure.getLayout().getPlayer(),
                         adventure.getLayout().getRooms().get(0),
                         adventure.getLayout().getRooms().get(0).getMonsterInRoom()));
@@ -134,7 +136,7 @@ public class AdventureTest {
                 adventure.roomInformation(adventure.getLayout().getPlayer(),
                         adventure.getLayout().getRooms().get(3),
                         adventure.getLayout().getRooms().get(3).getMonsterInRoom()));
-    }
+    }*/
 
     @Test
     public void roomInformationBadInput() {
@@ -143,21 +145,46 @@ public class AdventureTest {
     }
 
     @Test
+    public void descriptionAndDirection() {
+        assertEquals("You are standing beneath the Ferris Wheel of the Chicago World Fair. It was the " +
+                        "tallest exposition in the Exposition.\n" + "From here, you can go: East, Southeast",
+                adventure.descriptionAndDirections(adventure.getLayout().getRooms().get(0)));
+        assertEquals("You are at Jackson Park, which contains serene Japanese gardens, woodland trails and " +
+                        "beaches.\n" + "From here, you can go: North, Southeast",
+                adventure.descriptionAndDirections(adventure.getLayout().getRooms().get(6)));
+    }
+
+    @Test
+    public void listPlayerItems() {
+        assertEquals("lockpick", adventure.listOfPlayerItems());
+    }
+
+    @Test
+    public void userValidCommand() {
+        String userInput = "use lockpick with east";
+        String[] userInputArray = userInput.split(" ");
+        assertTrue(adventure.userValidCommand(userInputArray));
+    }
+
+    @Test
     public void printWrongDirection() {
-        assertEquals("I can't go 'west'\n" + "You are on Matthews, outside the Siebel Center\n" +
-                "From here, you can go: East", adventure.printWrongDirection("go west", adventure.getLayout()
+        assertEquals("I can't go 'west'\n" +
+                "You are standing beneath the Ferris Wheel of the Chicago World Fair. It was the tallest exposition in the Exposition.\n" +
+                "From here, you can go: East, Southeast", adventure.printWrongDirection("go west", adventure.getLayout()
                 .getRooms()
                 .get(0)));
-        assertEquals("I can't go 'SB SJO biji'\n" + "You are on Matthews, outside the Siebel Center\n" +
-                "From here, you can go: East", adventure.printWrongDirection("go SB SJO biji",
+        assertEquals("I can't go 'SB SJO biji'\n" +
+                "You are standing beneath the Ferris Wheel of the Chicago World Fair. It was the tallest exposition in the Exposition.\n" +
+                "From here, you can go: East, Southeast", adventure.printWrongDirection("go SB SJO biji",
                 adventure.getLayout()
                         .getRooms()
                         .get(0)));
-        assertEquals("I can't go ''\nYou are in the basement of Siebel.  You see tables with students " +
-                        "working and door to computer labs.\n" + "From here, you can go: Up",
+        assertEquals("I can't go ''\n" +
+                        "You are at Jackson Park, which contains serene Japanese gardens, woodland trails and beaches.\n" +
+                        "From here, you can go: North, Southeast",
                 adventure.printWrongDirection("go ", adventure.getLayout()
                         .getRooms()
-                        .get(7)));
+                        .get(6)));
     }
 
     @Test
@@ -172,33 +199,35 @@ public class AdventureTest {
 
     @Test
     public void printInvalidCommand() {
-        assertEquals("I don't understand 'go'\n" + "You are on Matthews, outside the Siebel Center\n" +
-                "From here, you can go: East", adventure.printInvalidCommand("go", adventure.getLayout()
+        assertEquals("I don't understand 'go'\n" +
+                "You are standing beneath the Ferris Wheel of the Chicago World Fair. It was the tallest exposition in the Exposition.\n" +
+                "From here, you can go: East, Southeast", adventure.printInvalidCommand("go", adventure.getLayout()
                 .getRooms()
                 .get(0)));
-        assertEquals("I don't understand 'pO'\n" + "You are on Matthews, outside the Siebel Center\n" +
-                "From here, you can go: East", adventure.printInvalidCommand("pO", adventure.getLayout()
+        assertEquals("I don't understand 'pO'\n" +
+                        "You are standing beneath the Ferris Wheel of the Chicago World Fair. It was the tallest " +
+                        "exposition in the Exposition.\n" +
+                        "From here, you can go: East, Southeast",
+                adventure.printInvalidCommand("pO", adventure.getLayout()
+                        .getRooms()
+                        .get(0)));
+        assertEquals("I don't understand 'go '\n" + "You are standing beneath the Ferris Wheel of the Chicago " +
+                "World Fair. It was the tallest exposition in the Exposition.\n" + "From here, you can go: " +
+                "East, Southeast", adventure.printInvalidCommand("go ", adventure.getLayout()
                 .getRooms()
                 .get(0)));
-        assertEquals("I don't understand 'go '\n" + "You are on Matthews, outside the Siebel Center\n" +
-                "From here, you can go: East", adventure.printInvalidCommand("go ", adventure.getLayout()
-                .getRooms()
-                .get(0)));
-        assertEquals("I don't understand ' '\n" + "You are in the basement of Siebel.  You see tables " +
-                        "with students working and door to computer labs.\n" + "From here, you can go: Up",
+        assertEquals("I don't understand ' '\n" +
+                        "You are at Jackson Park, which contains serene Japanese gardens, woodland trails and beaches.\n" +
+                        "From here, you can go: North, Southeast",
                 adventure.printInvalidCommand(" ", adventure.getLayout()
                         .getRooms()
-                        .get(7)));
-        assertEquals("I don't understand 'gophers are TASTY'\n" + "You are in the basement of Siebel.  You " +
-                        "see tables with students working and door to computer labs.\n" + "From here, you can go: Up",
+                        .get(6)));
+        assertEquals("I don't understand 'gophers are TASTY'\n" +
+                        "You are at Jackson Park, which contains serene Japanese gardens, woodland trails and beaches.\n" +
+                        "From here, you can go: North, Southeast",
                 adventure.printInvalidCommand("gophers are TASTY", adventure.getLayout()
                         .getRooms()
-                        .get(7)));
-        assertEquals("I don't understand 'UPpPP'\n" + "You are in the basement of Siebel.  You see tables " +
-                        "with students working and door to computer labs.\n" + "From here, you can go: Up",
-                adventure.printInvalidCommand("UPpPP", adventure.getLayout()
-                        .getRooms()
-                        .get(7)));
+                        .get(6)));
     }
 
     @Test
@@ -206,10 +235,10 @@ public class AdventureTest {
         assertFalse(adventure.reachedFinalRoom(adventure.getLayout()
                 .getRooms()
                 .get(0)));
-        assertFalse(adventure.reachedFinalRoom(adventure.getLayout()
-                .getRooms()
-                .get(7)));
         assertTrue(adventure.reachedFinalRoom(adventure.getLayout()
+                .getRooms()
+                .get(5)));
+        assertFalse(adventure.reachedFinalRoom(adventure.getLayout()
                 .getRooms()
                 .get(6)));
     }

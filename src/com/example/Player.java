@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Player {
+    private static Player player;
     private static Adventure adventure = new Adventure();
     private static Layout layout = new Layout();
     private ArrayList<Item> items;
@@ -27,13 +28,14 @@ public class Player {
     }
 
     //the player keeps knocking 200 points off monster, while player health is randomly subtracted
-    public static void fightMonster(Monster monster, Player player, Room currentRoom) {
-        currentRoom = adventure.getCurrentRoom();
+    public void fightMonster(Monster monster, Player player, Room currentRoom) {
         int playerHealth = player.getHealth();
         int monsterHealth = monster.getHealth();
         System.out.println("Before proceeding, you must battle: " + monster.getName());
         System.out.println("Monster has this much health: " + monster.getHealth());
         System.out.println("Player has this much health: " + player.getHealth());
+
+        playerHasSpecialItem(monster);
 
         while (monsterHealth > 0 && playerHealth > 0) {
             System.out.println("Enter 'attack' to attack the monster");
@@ -56,5 +58,43 @@ public class Player {
                 playerHealth = playerHealth + 500;
             }
         }
+    }
+
+    public void playerHasSpecialItem(Monster monster) {
+        if (monster.getName().equals("Serial Killer") && adventure.playerHasItem("noose", items)) {
+            System.out.println("\nThe Chicago serial killer H.H. Holmes was executed by hanging. You may " +
+                    "have a special item " + "that will aid you in battling this monster. \nTo use this item," +
+                    " successfully answer the following questions.");
+            if (playerPlaysTrivia()) {
+                System.out.println("You have correctly answered all the questions! You may now use the special item.");
+                Scanner scanner = new Scanner(System.in);
+                String userInput = scanner.nextLine();
+                if (userInput.equalsIgnoreCase("kill monster with noose")) {
+                    System.out.println("You have defeated the serial killer and escaped the murder castle!");
+                    System.exit(0);
+                } else {
+                    System.out.println("Incorrect command. Now battling monster.");
+                }
+            } else {
+                System.out.println("You did not answer all the questions correctly. Now battling monster");
+            }
+        }
+    }
+
+    public boolean playerPlaysTrivia() {
+        String[] questionsArray = {"\nTrue or False: The Chicago World's Fair of 1893 celebrated the 400th anniversary " +
+                "of the discovery of the New World by Columbus.", "Which US president opened the World's Fair?", "The Chicago World's Fair came about because of " +
+                "the success of a world's fair in what city?", "During the World's Fair of 1893 a serial killer was " +
+                "at work, using the draw of the Fair to ensnare his victims. What was his name?", "Which popular amusement park was inspired by the World Fair?"};
+        String[] answersArray = {"True", "Grover Cleveland", "Paris", "Holmes", "Disneyland"};
+        for (int i = 0; i < questionsArray.length; i++) {
+            Scanner scanner = new Scanner(System.in);
+            System.out.println(questionsArray[i]);
+            String userAnswer = scanner.nextLine();
+            if (!userAnswer.equalsIgnoreCase(answersArray[i])) {
+                return false;
+            }
+        }
+        return true;
     }
 }

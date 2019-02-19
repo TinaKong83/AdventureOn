@@ -59,6 +59,9 @@
         },
         {
           "name":"gum"
+        },
+        {
+          "name":"noose"
         }
       ],
       "monsterInRoom":{
@@ -167,6 +170,9 @@
       "items":[
         {
           "name":"zipper"
+        },
+        {
+          "name":"noose"
         }
       ],
       "monsterInRoom":{
