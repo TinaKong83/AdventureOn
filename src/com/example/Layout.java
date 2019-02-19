@@ -32,7 +32,7 @@ public class Layout {
     /**
      * Method that returns a room object when given the name of a certain room.
      *
-     * @param inputRoomName   the name of the room.
+     * @param inputRoomName the name of the room.
      * @return Room.
      **/
     public Room getRoomObjectFromName(String inputRoomName) {

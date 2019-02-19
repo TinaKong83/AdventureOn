@@ -29,7 +29,6 @@ public class Adventure {
     private static final int ITEM_COMMAND_MAX = 4;
     private static final int DIRECTION_COMMAND_MAX = 2;
 
-
     public Directions getDirectionCommand() {
         return directionCommand;
     }
@@ -60,6 +59,9 @@ public class Adventure {
                 " seconds exploring the White City.");
     }
 
+    /**
+     * Method that checks runs a single game.
+     **/
     public void playGame() {
         Scanner scanner = new Scanner(System.in);
         while (!gameEnded) {
@@ -91,6 +93,10 @@ public class Adventure {
         }
     }
 
+    /**
+     * Method that checks if a room is unlocked. If unlocked, the player proceeds to the next room and battles monsters
+     * if monsters exist. Otherwise, they must have a valid item.
+     **/
     public void userEnablesDirection() {
         if (directionCommand.getEnabled().equals("true")) {
             currentRoom = moveToNewRoom(directionCommand.getDirectionName(), currentRoom);
@@ -133,6 +139,10 @@ public class Adventure {
         System.out.println("From here, you can go: " + currentRoom.possibleDirection());
     }
 
+    /**
+     * @param fileName the name of the json file.
+     *                 Method parses JSON Data as a file.
+     **/
     public void setUp(String fileName) throws Exception {
         Gson gson = new Gson();
         layout = gson.fromJson(Data.getFileContentsAsString(fileName), Layout.class);
@@ -140,12 +150,21 @@ public class Adventure {
         currentRoom = layout.getRoomObjectFromName(layout.getStartingRoom());
     }
 
+    /**
+     * @param currentRoom the current room.
+     *                    Method retrieves the room description and possible directions.
+     * @return String.
+     **/
     public String getRoomDescriptionAndDirections(Room currentRoom) {
         String getRoomInstruction = currentRoom.getDescription();
         getRoomInstruction = getRoomInstruction + "\n" + "\nFrom here, you can go: " + currentRoom.possibleDirection();
         return getRoomInstruction;
     }
 
+    /**
+     * @param directionCommand the direction a player wishes to head towards.
+     *                         If a room is locked, asks the player to use a valid key with the direction.
+     **/
     public void playerUnlocksDirection(Directions directionCommand) {
         System.out.println("The player needs an item to unlock this direction.");
         System.out.println("Valid keys are: " + directionCommand.getValidKeyNames());
