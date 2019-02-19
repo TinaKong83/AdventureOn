@@ -76,7 +76,7 @@ public class Player {
                     System.out.println("Incorrect command. Now battling monster.");
                 }
             } else {
-                System.out.println("You did not answer all the questions correctly. Now battling monster");
+                System.out.println("You did not answer all the questions correctly. Now battling monster...");
             }
         }
     }

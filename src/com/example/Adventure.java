@@ -7,6 +7,8 @@ import com.mashape.unirest.http.exceptions.UnirestException;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.*;
 
 /**
@@ -41,13 +43,21 @@ public class Adventure {
         return layout;
     }
 
+    //Citation: https://stackoverflow.com/questions/5204051/how-to-calculate-the-running-time-of-my-program
     public static void main(String[] arguments) throws Exception {
+        long start = System.currentTimeMillis();
         final String COMMAND_URL = arguments[0];
         //String commandFile = arguments[0];
         adventure.testAlternateUrl(COMMAND_URL);
         //adventure.setUp(commandFile);
         System.out.println(adventure.beginGame());
         adventure.playGame();
+
+        long end = System.currentTimeMillis();
+
+        NumberFormat formatter = new DecimalFormat("#0.000");
+        System.out.print("\nWhile alive, you spent " + formatter.format((end - start) / 1000d) +
+                " seconds in the White City.");
     }
 
     public void playGame() {
@@ -56,7 +66,8 @@ public class Adventure {
             String originalInput = scanner.nextLine();
             String userInput = originalInput.toLowerCase();
             if (userEndsGame(originalInput) || reachedFinalRoom(currentRoom)) {
-                System.out.println("You have reached your final destination.");
+                System.out.println("While trying to run away, you were murdered by the serial killer H.H. Holmes.");
+                System.out.println("Restart the game to find a special item that may help you defeat him.");
                 break;
             }
             String[] userInputArray = userInput.split(" ");
@@ -94,10 +105,6 @@ public class Adventure {
      * If the URL is invalid, default to original URL.
      **/
     public void testAlternateUrl(String urlCommand) throws Exception {
-        /*System.out.println("Please enter a url.");
-        Scanner scanner = new Scanner(System.in);
-        String userUrl = scanner.nextLine();*/
-
         try {
             makeApiRequest(urlCommand);
         } catch (UnirestException e) {
