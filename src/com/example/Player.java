@@ -10,6 +10,7 @@ public class Player {
     private ArrayList<Item> items;
     private int health;
     private int attack;
+    private static final int PLAYER_HEALTH_BOOST = 500;
 
     public Layout getLayout() {
         return layout;
@@ -54,7 +55,7 @@ public class Player {
             System.out.println("The monster has attacked. Player now has: " + playerHealth + " HP");
             if (playerHealth <= 0) {
                 System.out.println("The monster has killed you! Try again.");
-                playerHealth = playerHealth + 500;
+                playerHealth = playerHealth + PLAYER_HEALTH_BOOST;
             }
         }
     }

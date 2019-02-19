@@ -26,6 +26,9 @@ public class Adventure {
     private static Room currentRoom;
     private static Directions directionCommand;
     private static boolean gameEnded = false;
+    private static final int ITEM_COMMAND_MAX = 4;
+    private static final int DIRECTION_COMMAND_MAX = 2;
+
 
     public Directions getDirectionCommand() {
         return directionCommand;
@@ -197,7 +200,7 @@ public class Adventure {
         }
         String[] userInputArray = userInput.toLowerCase().split(" ");
         userInput = userInputArray[userInputArray.length - 1].toLowerCase();
-        if (userInputArray.length != 2 && userInputArray.length != 4) {
+        if (userInputArray.length != DIRECTION_COMMAND_MAX && userInputArray.length != ITEM_COMMAND_MAX) {
             return false;
         }
         for (int i = 0; i < directionsArray.length; i++) {
@@ -210,13 +213,13 @@ public class Adventure {
     }
 
     public boolean userValidCommand(String[] userInputArray) {
-        if (userInputArray.length < 2) {
+        if (userInputArray.length < DIRECTION_COMMAND_MAX) {
             return false;
         }
         if (userInputArray[0].toLowerCase().equals("go") || userInputArray[0].toLowerCase().equals("pickup")) {
             return true;
         }
-        if (userInputArray.length >= 4 && userInputArray[0].toLowerCase().equals("use")
+        if (userInputArray.length >= ITEM_COMMAND_MAX && userInputArray[0].toLowerCase().equals("use")
                 && userInputArray[2].toLowerCase().equals("with")) {
             return true;
         }
@@ -225,7 +228,7 @@ public class Adventure {
 
     public boolean useItemWithDirection(String userInput, Room currentRoom, ArrayList<String> validKeyNames) {
         String[] userInputArray = userInput.split(" ");
-        if (userInputArray.length < 4) {
+        if (userInputArray.length < ITEM_COMMAND_MAX) {
             return false;
         }
         String itemName = userInputArray[1].toLowerCase();

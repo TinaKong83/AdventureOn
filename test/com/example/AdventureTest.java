@@ -14,7 +14,7 @@ public class AdventureTest {
 
     @Before
     public void setUp() throws Exception {
-        Adventure.makeApiRequest("https://pastebin.com/raw/pbAKRM5k");
+        Adventure.makeApiRequest("https://pastebin.com/raw/5G3Yqh9b");
     }
 
     @Test(expected = MalformedURLException.class)
@@ -289,7 +289,8 @@ public class AdventureTest {
 
     @Test
     public void itemExistsInRoom() {
-        assertFalse(adventure.itemExistsInRoom("soda", adventure.getLayout().getRooms().get(0).getItems()));
+        assertTrue(adventure.itemExistsInRoom("soda", adventure.getLayout().getRooms().get(0).getItems()));
+        assertFalse(adventure.itemExistsInRoom("bull", adventure.getLayout().getRooms().get(0).getItems()));
         assertFalse(adventure.itemExistsInRoom("", adventure.getLayout().getRooms().get(0).getItems()));
         assertTrue(adventure.itemExistsInRoom("map", adventure.getLayout().getRooms().get(6).getItems()));
     }
