@@ -36,7 +36,6 @@ public class Player {
         System.out.println("Player has this much health: " + player.getHealth());
 
         playerHasSpecialItem(monster);
-
         while (monsterHealth > 0 && playerHealth > 0) {
             System.out.println("Enter 'attack' to attack the monster");
             Scanner scanner = new Scanner(System.in);
@@ -49,7 +48,7 @@ public class Player {
                     break;
                 }
             } else {
-                System.out.println("I don't understand this command. Monster is now attacking.");
+                System.out.println("I don't understand this command. Monster is now attacking...");
             }
             playerHealth = playerHealth - monster.getAttack();
             System.out.println("The monster has attacked. Player now has: " + playerHealth + " HP");
@@ -61,7 +60,7 @@ public class Player {
     }
 
     public void playerHasSpecialItem(Monster monster) {
-        if (monster.getName().equals("Serial Killer") && adventure.playerHasItem("noose", items)) {
+        if (monster.getName().equals("Mystery Serial Killer") && adventure.playerHasItem("noose", items)) {
             System.out.println("\nThe Chicago serial killer H.H. Holmes was executed by hanging. You may " +
                     "have a special item " + "that will aid you in battling this monster. \nTo use this item," +
                     " successfully answer the following questions.");
@@ -73,7 +72,7 @@ public class Player {
                     System.out.println("You have defeated the serial killer and escaped the murder castle!");
                     System.exit(0);
                 } else {
-                    System.out.println("Incorrect command. Now battling monster.");
+                    System.out.println("Incorrect command. Now battling monster...");
                 }
             } else {
                 System.out.println("You did not answer all the questions correctly. Now battling monster...");
@@ -82,11 +81,17 @@ public class Player {
     }
 
     public boolean playerPlaysTrivia() {
-        String[] questionsArray = {"\nTrue or False: The Chicago World's Fair of 1893 celebrated the 400th anniversary " +
-                "of the discovery of the New World by Columbus.", "Which US president opened the World's Fair?", "The Chicago World's Fair came about because of " +
-                "the success of a world's fair in what city?", "During the World's Fair of 1893 a serial killer was " +
-                "at work, using the draw of the Fair to ensnare his victims. What was his name?", "Which popular amusement park was inspired by the World Fair?"};
-        String[] answersArray = {"True", "Grover Cleveland", "Paris", "Holmes", "Disneyland"};
+        String[] questionsArray = {"" +
+                "\nTrue or False: The Chicago World's Fair of 1893 celebrated the 400th" +
+                " anniversary " + "of the discovery of the New World by Columbus.",
+                "Which architect designed the Woman's Building?",
+                "Who assassinated the Chicago Mayor, Carter Harrison, on the last day of the fair?",
+                "During the World's Fair of 1893 a serial killer was at work, using the draw of the Fair to " +
+                        "ensnare his victims. What was his name?",
+                "Dr. Holmes was convicted and hanged after murdering his close partner in 1895. Who was the partner?"
+        };
+        String[] answersArray = {"True", "Sophia Hayden", "Patrick Prendergast", "Holmes", "Benjamin Pitezel"};
+
         for (int i = 0; i < questionsArray.length; i++) {
             Scanner scanner = new Scanner(System.in);
             System.out.println(questionsArray[i]);

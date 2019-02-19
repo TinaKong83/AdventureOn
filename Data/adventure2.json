@@ -12,17 +12,17 @@
   },
   "monsters":[
     {
-      "name":"Mothman Monster",
+      "name":"Ghost of Patrick Prendergast",
       "attack":120,
       "health":900
     },
     {
-      "name":"Ghost of Al Capone",
+      "name":"Ghost of Benjamin Pitezel",
       "attack":130,
       "health":700
     },
     {
-      "name":"Serial Killer",
+      "name":"Mystery Serial Killer",
       "attack":100,
       "health":800
     }
@@ -30,14 +30,14 @@
   "rooms":[
     {
       "name":"Ferris Wheel",
-      "description":"You are standing beneath the Ferris Wheel of the Chicago World Fair. It was the tallest exposition in the Exposition.",
+      "description":"You are standing beneath the Ferris Wheel of the Chicago World Fair. It was the tallest attraction in the Exposition at 264 feet high. \nWhile riding the wheel, you can see a view of Lake Michigan.",
       "directions":[
         {
           "directionName":"East",
           "room":"Woman's Building",
           "enabled":"false",
           "validKeyNames":[
-            "lockpick"
+            "soda"
           ]
         },
         {
@@ -45,7 +45,7 @@
           "room":"Transportation Building",
           "enabled":"false",
           "validKeyNames":[
-            "lockpick",
+            "hamburger",
             "gum"
           ]
         }
@@ -70,7 +70,7 @@
     },
     {
       "name":"Woman's Building",
-      "description":"You are in the Woman's Building. It has an assembly room, library and Hall of Honor.",
+      "description":"You are in the Woman's Building. It is an Italian-Renaissance style building with an assembly room, library and Hall of Honor. \nThe Woman's Building was designed by Sophia Hayden and was born from the nation's most prominent design competition for women at that time.",
       "directions":[
         {
           "directionName":"West",
@@ -93,7 +93,7 @@
           "room":"Transportation Building",
           "enabled":"false",
           "validKeyNames":[
-            "lockpick",
+            "soda",
             "map",
             "spraypaint"
           ]
@@ -101,7 +101,7 @@
       ],
       "items":[
         {
-          "name":"bullet"
+          "name":"hershey"
         }
       ],
       "monsterInRoom":{
@@ -110,7 +110,7 @@
     },
     {
       "name":"Viking Ship",
-      "description":"You are in Viking Ship. It is a replica of the Gokstad ship.",
+      "description":"You are in the Viking Ship. It has an elaborately carved black and gold dragon head and tail, yellow and black shields along both sides and 32 oars. \nA waving black raven flag represents the raven flag of the ancient Vikings.",
       "directions":[
         {
           "directionName":"South",
@@ -139,7 +139,7 @@
     },
     {
       "name":"Transportation Building",
-      "description":"You are in the Transportation Building. It is painted in various strong colors.",
+      "description":"You are in the Transportation Building. While other buildings are painted white with columns and domes, \nTransportation has red walls, arched windows, and a large arched doorway made with real gold.",
       "directions":[
         {
           "directionName":"South",
@@ -163,7 +163,7 @@
           "enabled":"false",
           "validKeyNames":[
             "zipper",
-            "lockpick"
+            "soda"
           ]
         }
       ],
@@ -176,14 +176,14 @@
         }
       ],
       "monsterInRoom":{
-        "name":"Serial Killer",
-        "attack":100,
-        "health":800
+        "name":"Ghost of Benjamin Pitezel.",
+        "attack":130,
+        "health":700
       }
     },
     {
       "name":"Palace Of Fine Arts",
-      "description":"You are in Palace of Fine Arts. It displays paintings, prints, drawing, sculpture, and metal work.",
+      "description":"You are in Palace of Fine Arts. It displays paintings, prints, drawing, sculpture, and metal work. \nIt is the only remaining in place building from the 1893 World's Columbian Exposition, now housing the Chicago Museum of Science and Industry",
       "directions":[
         {
           "directionName":"West",
@@ -191,7 +191,7 @@
           "enabled":"false",
           "validKeyNames":[
             "zipper",
-            "lockpick"
+            "soda"
           ]
         },
         {
@@ -199,25 +199,25 @@
           "room":"Viking Ship",
           "enabled":"true",
           "validKeyNames":[
-            "bomb",
+            "spraypaint",
             "map"
           ]
         }
       ],
       "items":[
         {
-          "name":"bullet"
+          "name":"hershey"
         }
       ],
       "monsterInRoom":{
-        "name":"Ghost of Al Capone",
-        "attack":130,
-        "health":700
+        "name":"Ghost of Patrick Prendergast",
+        "attack":120,
+        "health":900
       }
     },
     {
       "name":"Holmes Castle",
-      "description":"You are in the castle of H.H. Holmes, an American serial killer who confessed to 27 murders.",
+      "description":"You are in the castle of H.H. Holmes, an American serial killer who confessed to 27 murders. \nThere are soundproof rooms, secret passages and a disorienting maze of hallways and staircases to lure unsuspecting victims.",
       "directions":[
         {
           "directionName":"North",
@@ -230,11 +230,11 @@
       ],
       "items":[
         {
-          "name":"bomb"
+          "name":"pasta"
         }
       ],
       "monsterInRoom":{
-        "name":"Serial Killer",
+        "name":"Mystery Serial Killer",
         "attack":100,
         "health":800
       }
@@ -257,19 +257,19 @@
           "enabled":"false",
           "validKeyNames":[
             "gum",
-            "bullet"
+            "pasta"
           ]
         }
       ],
       "items":[
         {
-          "name":"bomb"
+          "name":"map"
         }
       ],
       "monsterInRoom":{
-        "name":"Mothman Monster",
-        "attack":120,
-        "health":900
+        "name":"Ghost of Benjamin Pitezel",
+        "attack":130,
+        "health":700
       }
     }
   ]

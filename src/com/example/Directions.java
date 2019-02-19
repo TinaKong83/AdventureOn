@@ -6,8 +6,6 @@ public class Directions {
     private String directionName;
     private String room;
     private String enabled;
-
-    //array of keys that can enable a direction
     private ArrayList<String> validKeyNames;
 
     public String getDirectionName() {

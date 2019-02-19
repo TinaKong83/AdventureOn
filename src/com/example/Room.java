@@ -7,8 +7,6 @@ public class Room {
     private String name;
     private String description;
     private Directions[] directions;
-
-    //items that are available to pick up in the room
     private ArrayList<Item> items;
     private Monster monsterInRoom;
 
@@ -47,7 +45,7 @@ public class Room {
      * @param inputDirection   the direction command the user inputs (e.g. east, west).
      * @return String.
      **/
-    public String roomFromDirection(String inputDirection) {
+    public String getRoomFromDirection(String inputDirection) {
         if (inputDirection == null) {
             return null;
         }

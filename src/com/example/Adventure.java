@@ -44,20 +44,17 @@ public class Adventure {
     }
 
     //Citation: https://stackoverflow.com/questions/5204051/how-to-calculate-the-running-time-of-my-program
+    //Citation: https://en.wikipedia.org/wiki/World%27s_Columbian_Exposition
     public static void main(String[] arguments) throws Exception {
         long start = System.currentTimeMillis();
         final String COMMAND_URL = arguments[0];
-        //String commandFile = arguments[0];
         adventure.testAlternateUrl(COMMAND_URL);
-        //adventure.setUp(commandFile);
-        System.out.println(adventure.beginGame());
+        adventure.beginGame();
         adventure.playGame();
-
         long end = System.currentTimeMillis();
-
         NumberFormat formatter = new DecimalFormat("#0.000");
         System.out.print("\nWhile alive, you spent " + formatter.format((end - start) / 1000d) +
-                " seconds in the White City.");
+                " seconds exploring the White City.");
     }
 
     public void playGame() {
@@ -72,21 +69,21 @@ public class Adventure {
             }
             String[] userInputArray = userInput.split(" ");
             if (!userValidCommand(userInputArray)) {
-                System.out.println(printInvalidCommand(originalInput, currentRoom));
+                System.out.println(getInvalidCommand(originalInput, currentRoom));
             } else if (userInputArray[0].toLowerCase().equals("go")
                     && findDirectionInArray(currentRoom.getDirections(), userInput)) {
                 userEnablesDirection();
             } else if (userInputArray[0].toLowerCase().equals("go")
                     && !findDirectionInArray(currentRoom.getDirections(), userInput)) {
-                System.out.println(printWrongDirection(originalInput, currentRoom));
+                System.out.println(getWrongDirection(originalInput, currentRoom));
             } else if (findDirectionInArray(currentRoom.getDirections(), userInput)
                     && useItemWithDirection(userInput, currentRoom, directionCommand.getValidKeyNames())) {
                 currentRoom = moveToNewRoom(directionCommand.getDirectionName(), currentRoom);
-                System.out.println(roomInformation(player, currentRoom, currentRoom.getMonsterInRoom()));
+                System.out.println(roomMonstersInformation(player, currentRoom, currentRoom.getMonsterInRoom()));
             } else if (userInputArray[0].toLowerCase().equals("pickup")) {
                 examineItem(userInputArray);
             } else {
-                System.out.println(printInvalidCommand(originalInput, currentRoom));
+                System.out.println(getInvalidCommand(originalInput, currentRoom));
             }
         }
     }
@@ -94,7 +91,7 @@ public class Adventure {
     public void userEnablesDirection() {
         if (directionCommand.getEnabled().equals("true")) {
             currentRoom = moveToNewRoom(directionCommand.getDirectionName(), currentRoom);
-            System.out.println(roomInformation(player, currentRoom, currentRoom.getMonsterInRoom()));
+            System.out.println(roomMonstersInformation(player, currentRoom, currentRoom.getMonsterInRoom()));
         } else {
             playerUnlocksDirection(directionCommand);
         }
@@ -122,11 +119,15 @@ public class Adventure {
      *
      * @return String of starting room information.
      **/
-    public String beginGame() {
-        String beginGame = "Your journey begins here";
-        beginGame = beginGame + "\n" + currentRoom.getDescription();
-        beginGame = beginGame + "\n" + "From here, you can go: " + currentRoom.possibleDirection();
-        return beginGame;
+    public void beginGame() {
+        System.out.println("Welcome to the 1893 Chicago World Fair! The Chicago Fair is a celebration of the " +
+                "400th anniversary of Columbus's arrival to the New World, \nand a cultural reflection of American " +
+                "science, art and industry.");
+        System.out.println("The exposition features over 200 buildings of predominantly neoclassical architecture, " +
+                "canals and lagoons, and over 27 million visitors");
+        System.out.println("Your journey in the magical White City begins here...\n");
+        System.out.println(currentRoom.getDescription());
+        System.out.println("From here, you can go: " + currentRoom.possibleDirection());
     }
 
     public void setUp(String fileName) throws Exception {
@@ -136,9 +137,9 @@ public class Adventure {
         currentRoom = layout.getRoomObjectFromName(layout.getStartingRoom());
     }
 
-    public String descriptionAndDirections(Room currentRoom) {
+    public String getRoomDescriptionAndDirections(Room currentRoom) {
         String getRoomInstruction = currentRoom.getDescription();
-        getRoomInstruction = getRoomInstruction + "\nFrom here, you can go: " + currentRoom.possibleDirection();
+        getRoomInstruction = getRoomInstruction + "\n" + "\nFrom here, you can go: " + currentRoom.possibleDirection();
         return getRoomInstruction;
     }
 
@@ -148,7 +149,7 @@ public class Adventure {
         if (!hasValidKey(directionCommand.getValidKeyNames(), player.getItems())) {
             System.out.println("The user does not have a valid key for "
                     + directionCommand.getDirectionName());
-            System.out.println(descriptionAndDirections(currentRoom));
+            System.out.println(getRoomDescriptionAndDirections(currentRoom));
         } else {
             System.out.println("You have a valid item. To access this direction, enter " +
                     "'use item with direction'");
@@ -160,7 +161,7 @@ public class Adventure {
         if (itemObject != null) {
             pickUpItem(itemObject, currentRoom.getItems(), player.getItems());
         }
-        return "Your current items are: " + listOfPlayerItems() + "\n" + descriptionAndDirections(currentRoom);
+        return "Your current items are: " + listOfPlayerItems() + "\n" + getRoomDescriptionAndDirections(currentRoom);
     }
 
     public void examineItem(String[] userInputArray) {
@@ -169,7 +170,7 @@ public class Adventure {
             System.out.println(getItemInformation(itemCommand));
         } else {
             System.out.println("This item does not exist.");
-            System.out.println(descriptionAndDirections(currentRoom));
+            System.out.println(getRoomDescriptionAndDirections(currentRoom));
         }
     }
 
@@ -236,7 +237,7 @@ public class Adventure {
     }
 
     public Room moveToNewRoom(String currentDirectionName, Room currentRoom) {
-        String newRoomName = currentRoom.roomFromDirection(currentDirectionName);
+        String newRoomName = currentRoom.getRoomFromDirection(currentDirectionName);
         currentRoom = layout.getRoomObjectFromName(newRoomName);
         return currentRoom;
     }
@@ -275,19 +276,19 @@ public class Adventure {
      * @return String.
      **/
 
-    public String roomInformation(Player player, Room currentRoom, Monster monsterInRoom) {
+    public String roomMonstersInformation(Player player, Room currentRoom, Monster monsterInRoom) {
         StringBuilder roomInformation = new StringBuilder();
         if (currentRoom == null) {
             return null;
         }
         if (currentRoom.getMonsterInRoom().getHealth() == 0) {
             return "There are no monsters in the room.\n" + currentRoom.getDescription()
-                    + "\nFrom here, you can go: " + currentRoom.possibleDirection();
+                    + "\n" + "\nFrom here, you can go: " + currentRoom.possibleDirection();
         } else {
             roomInformation.append("The monster in this room is: " + monsterInRoom.getName() + "\n");
             player.fightMonster(monsterInRoom, player, currentRoom);
         }
-        roomInformation.append(currentRoom.getDescription() + "\nFrom here, you can go: "
+        roomInformation.append(currentRoom.getDescription() + "\n" + "\nFrom here, you can go: "
                 + currentRoom.possibleDirection());
         return roomInformation.toString();
     }
@@ -299,12 +300,12 @@ public class Adventure {
      * @param userInput   the direction command the user inputs (e.g. go east, go west).
      * @return String.
      **/
-    public String printWrongDirection(String userInput, Room currentRoom) {
+    public String getWrongDirection(String userInput, Room currentRoom) {
         if (userInput == null || currentRoom == null) {
             return null;
         }
         return "I can't go '" + userInput.substring(COMMAND_INDEX) + "'\n"
-                + descriptionAndDirections(currentRoom);
+                + getRoomDescriptionAndDirections(currentRoom);
     }
 
     /**
@@ -314,12 +315,12 @@ public class Adventure {
      * @param userInput   the direction command the user inputs (e.g. go east, go west).
      * @return String.
      **/
-    public String printInvalidCommand(String userInput, Room currentRoom) {
+    public String getInvalidCommand(String userInput, Room currentRoom) {
         if (userInput == null || currentRoom == null) {
             return null;
         }
         return "I don't understand '" + userInput + "'\n"
-                + descriptionAndDirections(currentRoom);
+                + getRoomDescriptionAndDirections(currentRoom);
     }
 
     public boolean itemExistsInRoom(String itemToPickUp, ArrayList<Item> availableRoomItems) {
@@ -340,8 +341,7 @@ public class Adventure {
         return false;
     }
 
-    public void pickUpItem(Item itemToPickUp, ArrayList<Item> availableRoomItems,
-                           ArrayList<Item> playerItems) {
+    public void pickUpItem(Item itemToPickUp, ArrayList<Item> availableRoomItems, ArrayList<Item> playerItems) {
         for (int i = 0; i < availableRoomItems.size(); i++) {
             if (availableRoomItems.get(i).getName().equals(itemToPickUp.getName())) {
                 playerItems.add(itemToPickUp);
