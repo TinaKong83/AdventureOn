@@ -28,7 +28,6 @@ public class Player {
         return attack;
     }
 
-    //the player keeps knocking 200 points off monster, while player health is randomly subtracted
     public void fightMonster(Monster monster, Player player, Room currentRoom) {
         int playerHealth = player.getHealth();
         int monsterHealth = monster.getHealth();
